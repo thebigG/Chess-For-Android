@@ -17,57 +17,57 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/sandy_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/saddle_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/sandy_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/saddle_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/sandy_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/saddle_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/sandy_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/saddle_brown"
 
                 />
@@ -78,180 +78,57 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/saddle_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/sandy_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/saddle_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/sandy_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/saddle_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/sandy_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/saddle_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@color/sandy_brown"
-
-                />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@color/sandy_brown"
-
-                />
-
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@color/saddle_brown"
-
-                />
-
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@color/sandy_brown"
-
-                />
-
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@color/saddle_brown"
-
-                />
-
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@color/sandy_brown"
-
-                />
-
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@color/saddle_brown"
-
-                />
-
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@color/sandy_brown"
-
-                />
-
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@color/saddle_brown"
-
-                />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@color/saddle_brown"
-
-                />
-
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@color/sandy_brown"
-
-                />
-
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@color/saddle_brown"
-
-                />
-
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@color/sandy_brown"
-
-                />
-
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@color/saddle_brown"
-
-                />
-
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@color/sandy_brown"
-
-                />
-
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@color/saddle_brown"
-
-                />
-
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/sandy_brown"
 
                 />
@@ -263,55 +140,178 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/sandy_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/saddle_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/sandy_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/saddle_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@color/sandy_brown"
+
+                />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@color/saddle_brown"
+
+                />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@color/sandy_brown"
+
+                />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@color/saddle_brown"
+
+                />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@color/saddle_brown"
+
+                />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@color/sandy_brown"
+
+                />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@color/saddle_brown"
+
+                />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@color/sandy_brown"
+
+                />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@color/saddle_brown"
+
+                />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@color/sandy_brown"
+
+                />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@color/saddle_brown"
+
+                />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@color/sandy_brown"
+
+                />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@color/sandy_brown"
+
+                />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@color/saddle_brown"
+
+                />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@color/sandy_brown"
+
+                />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@color/saddle_brown"
+
+                />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/sandy_brown" />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/saddle_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/sandy_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/saddle_brown"
 
                 />
@@ -322,57 +322,57 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/saddle_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/sandy_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/saddle_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/sandy_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/saddle_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/sandy_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/saddle_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/sandy_brown"
 
                 />
@@ -384,57 +384,57 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/sandy_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/saddle_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/sandy_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/saddle_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/sandy_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/saddle_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/sandy_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/saddle_brown"
 
                 />
@@ -445,57 +445,57 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/saddle_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/sandy_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/saddle_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/sandy_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/saddle_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/sandy_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/saddle_brown"
 
                 />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@color/sandy_brown"
 
                 />
