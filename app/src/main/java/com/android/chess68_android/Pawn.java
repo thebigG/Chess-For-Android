@@ -5,6 +5,8 @@
  */
 package com.android.chess68_android;
 
+import android.util.Log;
+
 /**
  *
  * @author lorenzogomez
@@ -61,12 +63,19 @@ public Pawn(Point StartingLocation, Color PieceColor)
              }
             else
             {
-                 if(Board[CurrentPosition.getX()][Destination.getY()] != null && Board[CurrentPosition.getX()][Destination.getY()].getName().equalsIgnoreCase("p")  )
+                System.out.println("IS this pawn ELSE test running?");
+                System.out.println("PIece in question:" + Board[CurrentPosition.getX()][Destination.getY()]  );
+                System.out.println("First test -->" + Board[CurrentPosition.getX()][Destination.getY()] != null);
+                if(Board[CurrentPosition.getX()][Destination.getY()] != null && Board[CurrentPosition.getX()][Destination.getY()].getName().equalsIgnoreCase("p")  )
                 {
+                    System.out.println("Second test-->"  + Board[CurrentPosition.getX()][Destination.getY()].getName().equalsIgnoreCase("p")  );
+
+                    System.out.println("IS this pawn test running?");
                 if( ((Pawn)Board[CurrentPosition.getX()][Destination.getY()]).Empassant && Board[CurrentPosition.getX()][Destination.getY()].PieceColor != this.PieceColor  )
                     {
-                    //Chess.thisBoard.BlackContainer.remove(Board[CurrentPosition.getX()][Destination.getY()]);
-                    Board[CurrentPosition.getX()][Destination.getY()] = null;
+                    BoardManager.getInstance().WhiteContainer.remove(Board[CurrentPosition.getX()][Destination.getY()]);
+                        Log.d(MainActivity.STATE,String.format("Setting White piece on (%d,%d) to null", CurrentPosition.getX(),Destination.getY() ));
+                        Board[CurrentPosition.getX()][Destination.getY()] = null;
                     return true;
                     }
                 }
@@ -118,7 +127,8 @@ public Pawn(Point StartingLocation, Color PieceColor)
                 {
                 if( ((Pawn)Board[CurrentPosition.getX()][Destination.getY()]).Empassant &&  Board[CurrentPosition.getX()][Destination.getY()].PieceColor != this.PieceColor  )
                     {
-                  //  Chess.thisBoard.BlackContainer.remove(Board[CurrentPosition.getX()][Destination.getY()]);
+                    BoardManager.getInstance().BlackContainer.remove(Board[CurrentPosition.getX()][Destination.getY()]);
+                        Log.d(MainActivity.STATE,String.format("Setting Black piece on (%d,%d) to null", CurrentPosition.getX(),Destination.getY() ));
                     Board[CurrentPosition.getX()][Destination.getY()] = null;
                     return true;
                     }

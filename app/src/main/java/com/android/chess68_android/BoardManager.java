@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import javax.xml.transform.Source;
+
 /**
  *
  * @author lorenzogomez
@@ -36,7 +38,8 @@ private static BoardManager Instance;
 private StringBuilder BoardImage; //used for representing the board as a simple, mutable string
 public  Piece[][] Board;
 public King CurrentKing;
-private HashMap<Point, Point[]> CurrentLegalMoves;
+private HashMap<Point, Point[]> CurrentLegalMovesForBlack;
+private HashMap<Point, Point[]> CurrentLegalMovesForWhite;
 public Color CurrentColor = Color.White;
 private TableLayout ChessBoard;
  /*
@@ -48,11 +51,16 @@ having to iterate over the entire board, which contains 64 empty sqaures--
 public  ArrayList<Piece> BlackContainer; 
  public  ArrayList<Piece> WhiteContainer;
  private Activity ChessActivity;
- private Piece CurrentPiece;
+ public Piece CurrentSelectedPiece; //Piece that is currently selected by current player
  public static int NotifyColor;
- public static int NotifyColorId;
  public static int DarkColor;
  public static int LightColor;
+ public static int BlackBishop = R.drawable.bishop;
+ public static int BlackRook = R.drawable.rook;
+ public static int BlackQueen = R.drawable.queen;
+ public static int BlackKing = R.drawable.king;
+ public static int BlackPawn = R.drawable.pawn;
+ public static int BlackKnight = R.drawable.knight;
  private BoardManager(Activity ChessActivity)
  {
      this.ChessActivity = ChessActivity;
@@ -63,7 +71,8 @@ public  ArrayList<Piece> BlackContainer;
      BlackContainer = new ArrayList<>(16);
      WhiteContainer = new ArrayList<>(16);
      CurrentKing = fetchKing(Color.White);
-     CurrentLegalMoves = new HashMap<>();
+     CurrentLegalMovesForWhite = new HashMap<>();
+     CurrentLegalMovesForBlack = new HashMap<>();
      NotifyColor =  ChessActivity.getResources().getColor(R.color.yellow, null);
      DarkColor =  ChessActivity.getResources().getColor(R.color.saddle_brown, null);;
      LightColor =  ChessActivity.getResources().getColor(R.color.sandy_brown, null);
@@ -79,10 +88,23 @@ public  ArrayList<Piece> BlackContainer;
      }
      return Instance;
  }
+    public static BoardManager getInstance()
+    {
+        return Instance;
+    }
  public Point[] getLegalMoves(Piece Source)
  {
-     if(Source != null) {
-         return CurrentLegalMoves.get(Source.CurrentPosition);
+     if(Source != null)
+     {
+         System.out.println("Is this running??");
+         if(Source.PieceColor == Color.White) {
+             System.out.println();
+             return CurrentLegalMovesForWhite.get(Source.CurrentPosition);
+         }
+         else
+             {
+             return CurrentLegalMovesForBlack.get(Source.CurrentPosition);
+         }
      }
      return null;
  }
@@ -104,12 +126,17 @@ public  ArrayList<Piece> BlackContainer;
                  {
                      Board[row][col] = new Rook(new Point(row, col), Color.Black); 
                      BlackContainer.add(BlackContainerCounter, Board[row][col]) ;
+                     ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setImageResource(BlackRook);
+                     ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setTag(BlackRook);
+                     
                      BlackContainerCounter++;
                  }
                  else if(col == 1 || col == 6)
                  {
                      Board[row][col] = new Knight(new Point(row, col), Color.Black); 
                      BlackContainer.add(BlackContainerCounter, Board[row][col]) ;
+                     ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setImageResource(BlackKnight);
+                     ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setTag(BlackKnight);
                      BlackContainerCounter++;
                  }
                 else if(col == 2 || col == 5)
@@ -117,18 +144,24 @@ public  ArrayList<Piece> BlackContainer;
                      Board[row][col] = new Bishop(new Point(row, col), Color.Black); 
                      BlackContainer.add(BlackContainerCounter, Board[row][col]) ;
                      BlackContainerCounter++;
+                     ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setImageResource(BlackBishop);
+                     ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setTag(BlackBishop);
                  }
                 else if(col ==  3)
                 {
                     Board[row][col] = new Queen(new Point(row, col), Color.Black); 
                     BlackContainer.add(BlackContainerCounter, Board[row][col]) ;
                     BlackContainerCounter++;
+                    ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setImageResource(BlackQueen);
+                    ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setTag(BlackQueen);
                 }
                   else if(col ==  4)
                 {
                     Board[row][col] = new King(new Point(row, col), Color.Black); 
                     BlackContainer.add(BlackContainerCounter, Board[row][col]) ;
                     BlackContainerCounter++;
+                    ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setImageResource(BlackKing);
+                    ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setTag(BlackKing);
                 }
              }
              else if(row == 1)
@@ -137,12 +170,17 @@ public  ArrayList<Piece> BlackContainer;
                   BlackContainer.add(BlackContainerCounter, Board[row][col]) ;
                  Log.d("row:", ("Black pawn" + " for col: " + col) + "," +"row::" + row);
                   BlackContainerCounter++;
+                 ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setImageResource(BlackPawn);
+                 ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setTag(BlackPawn);
              }
              else if(row == 6)
              {
                  Board[row][col] = new Pawn(new Point(row, col), Color.White);
                   WhiteContainer.add(WhiteContainerCounter, Board[row][col]) ;
                   WhiteContainerCounter++;
+                 ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setTag(BlackPawn);
+                 ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setImageResource(BlackPawn);
+
              }
              else if(row == 7)
              {
@@ -151,31 +189,44 @@ public  ArrayList<Piece> BlackContainer;
                      Board[row][col] = new Rook(new Point(row, col), Color.White);
                      WhiteContainer.add(WhiteContainerCounter, Board[row][col]) ;
                      WhiteContainerCounter++;
-                     
+                     ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setTag(BlackRook);
+                     ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setImageResource(BlackRook);
+
+
                  }
                  else if(col == 1 || col == 6)
                  {
                      Board[row][col] = new Knight(new Point(row, col), Color.White); 
                      WhiteContainer.add(WhiteContainerCounter, Board[row][col]) ;
                      WhiteContainerCounter++;
+                     ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setTag(BlackKnight);
+                     ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setImageResource(BlackKnight);
+
                  }
                 else if(col == 2 || col == 5)
                  {
                      Board[row][col] = new Bishop(new Point(row, col), Color.White); 
                      WhiteContainer.add(WhiteContainerCounter, Board[row][col]) ;
                      WhiteContainerCounter++;
+                     ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setImageResource(BlackBishop);
+                     ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setTag(BlackBishop);
                  }
                 else if(col ==  3)
                 {
                     Board[row][col] = new Queen(new Point(row, col), Color.White); 
                     WhiteContainer.add(WhiteContainerCounter, Board[row][col]) ;
                      WhiteContainerCounter++;
+                    ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setTag(BlackQueen);
+                    ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setImageResource(BlackQueen);
+
                 }
                   else if(col ==  4)
                 {
                     Board[row][col] = new King(new Point(row, col), Color.White);
                     WhiteContainer.add(WhiteContainerCounter, Board[row][col]) ;
                      WhiteContainerCounter++;
+                    ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setTag(BlackKing);
+                    ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setImageResource(BlackKing);
                 }
              }
          }
@@ -193,11 +244,13 @@ public  ArrayList<Piece> BlackContainer;
      {
          CurrentColor = Color.White;
               CurrentKing = fetchKing(CurrentColor);
+         cacheLegalMoves(Color.White);
          return;
      }
    
      CurrentColor = Color.Black;
      CurrentKing = fetchKing(CurrentColor);
+     cacheLegalMoves(Color.Black);
  }
 
  public boolean checkBounds(String Location)
@@ -230,41 +283,41 @@ public  ArrayList<Piece> BlackContainer;
      bound = (int) Location.charAt(0) % 97;
      return (bound<7 || bound>0);
  }
- public boolean makeMove(String CurrentLocation, String Destination, String Promotion)
+ public Piece getChessPiece(Point target)
  {
-     if(!checkBounds(CurrentLocation) || !checkBounds(Destination))
-     {
-//         System.out.println("out of bounds");
-         return false;
-     }
+     return Board[target.getX()][target.getY()];
+ }
+ public boolean makeMove(Point DestinationLocation, String Promotion)
+ {
+
      
-     Piece CurrentPiece = fetchPiece(CurrentLocation);
-     Piece DestinationPiece = fetchPiece(Destination);
+//     Piece CurrentSelectedPiece = fetchPiece(CurrentLocation);
+     Piece DestinationPiece = getChessPiece(DestinationLocation);
      
-     if(CurrentPiece != null)
+     if(CurrentSelectedPiece != null)
      {
-         if(Promotion != null && !CurrentPiece.getName().equalsIgnoreCase("p"))
+         if(Promotion != null && !CurrentSelectedPiece.getName().equalsIgnoreCase("p"))
      {
          return false;
      }
 //         System.out.println("null piece ");
-         if(CurrentPiece.PieceColor == CurrentColor &&(DestinationPiece == null || DestinationPiece.PieceColor != CurrentColor))
+         if(CurrentSelectedPiece.PieceColor == CurrentColor &&(DestinationPiece == null || DestinationPiece.PieceColor != CurrentColor))
          {
-             Point DestinationPoint = parseLocation(Destination);
-             if( !(CurrentPiece.movePiece(Board,DestinationPoint)))
+//             Point DestinationPoint = parseLocation(Destination);
+             if( !(CurrentSelectedPiece.movePiece(Board,DestinationLocation)))
              {
 //                 System.out.println("IS this running 0?");
                  return false;
              }
-//             Point oldPoint  = new Point(CurrentPiece.CurrentPosition);
-             Point tempCurrentPosition = new Point(CurrentPiece.CurrentPosition);
-             updatePiecePosition(tempCurrentPosition, DestinationPoint);
+//             Point oldPoint  = new Point(CurrentSelectedPiece.CurrentPosition);
+             Point tempCurrentPosition = new Point(CurrentSelectedPiece.CurrentPosition);
+             updatePiecePosition(tempCurrentPosition, DestinationLocation);
              if( isInCheck(fetchKing(CurrentColor)))
              {
                  
 //                 System.out.println(CurrentColor  + "is in check");
-                 updatePiecePosition(DestinationPoint, tempCurrentPosition);
-                 Board[DestinationPoint.getX()][DestinationPoint.getY()] = DestinationPiece;
+                 updatePiecePosition(DestinationLocation, tempCurrentPosition);
+                 Board[DestinationLocation.getX()][DestinationLocation.getY()] = DestinationPiece;
                  if(DestinationPiece != null)
              {
              if(CurrentColor == Color.Black)
@@ -276,7 +329,7 @@ public  ArrayList<Piece> BlackContainer;
                  BlackContainer.add(DestinationPiece);
              }
              }
-//                 System.out.println("This piece is in check:" + CurrentPiece );
+//                 System.out.println("This piece is in check:" + CurrentSelectedPiece );
                  return false;
                  
              }
@@ -284,23 +337,23 @@ public  ArrayList<Piece> BlackContainer;
              
              if(CurrentColor == Color.Black)
              {
-                 if(CurrentPiece.CurrentPosition.getX() == 7 && CurrentPiece.getName().equals("p"))
+                 if(CurrentSelectedPiece.CurrentPosition.getX() == 7 && CurrentSelectedPiece.getName().equals("p"))
                  {
-                     Piece oldPawn = Board[CurrentPiece.CurrentPosition.getX()][CurrentPiece.CurrentPosition.getY()];
-                     Board[CurrentPiece.CurrentPosition.getX()][CurrentPiece.CurrentPosition.getY()]=  ((Pawn) CurrentPiece).Promote(Promotion);
+                     Piece oldPawn = Board[CurrentSelectedPiece.CurrentPosition.getX()][CurrentSelectedPiece.CurrentPosition.getY()];
+                     Board[CurrentSelectedPiece.CurrentPosition.getX()][CurrentSelectedPiece.CurrentPosition.getY()]=  ((Pawn) CurrentSelectedPiece).Promote(Promotion);
                      BlackContainer.remove(oldPawn);
-                     BlackContainer.add( Board[CurrentPiece.CurrentPosition.getX()][CurrentPiece.CurrentPosition.getY()]);
+                     BlackContainer.add( Board[CurrentSelectedPiece.CurrentPosition.getX()][CurrentSelectedPiece.CurrentPosition.getY()]);
                  }
                  setKingCheckState(Color.White);
              }
              else
              {
-                  if(CurrentPiece.CurrentPosition.getX() == 0 && CurrentPiece.getName().equals("p"))
+                  if(CurrentSelectedPiece.CurrentPosition.getX() == 0 && CurrentSelectedPiece.getName().equals("p"))
                  {
-                     Piece oldPawn = Board[CurrentPiece.CurrentPosition.getX()][CurrentPiece.CurrentPosition.getY()];
-                     Board[CurrentPiece.CurrentPosition.getX()][CurrentPiece.CurrentPosition.getY()]=  ((Pawn) CurrentPiece).Promote(Promotion);
+                     Piece oldPawn = Board[CurrentSelectedPiece.CurrentPosition.getX()][CurrentSelectedPiece.CurrentPosition.getY()];
+                     Board[CurrentSelectedPiece.CurrentPosition.getX()][CurrentSelectedPiece.CurrentPosition.getY()]=  ((Pawn) CurrentSelectedPiece).Promote(Promotion);
                      WhiteContainer.remove(oldPawn);
-                     WhiteContainer.add(Board[CurrentPiece.CurrentPosition.getX()][CurrentPiece.CurrentPosition.getY()]);
+                     WhiteContainer.add(Board[CurrentSelectedPiece.CurrentPosition.getX()][CurrentSelectedPiece.CurrentPosition.getY()]);
                  }
                  setKingCheckState(Color.Black);
              }
@@ -310,6 +363,69 @@ public  ArrayList<Piece> BlackContainer;
      return false;
  
  }
+    public boolean simulateMove(Piece SourcePiece, Point DestinationLocation, String Promotion)
+    {
+
+//     Piece CurrentSelectedPiece = fetchPiece(CurrentLocation);
+        Piece DestinationPiece = getChessPiece(DestinationLocation);
+        if(SourcePiece != null)
+        {
+            if(Promotion != null && !SourcePiece.getName().equalsIgnoreCase("p"))
+            {
+                return false;
+            }
+//         System.out.println("null piece ");
+            if((DestinationPiece == null || DestinationPiece.PieceColor != SourcePiece.PieceColor))
+            {
+//             Point DestinationPoint = parseLocation(Destination);
+                if( !(SourcePiece.move(Board,DestinationLocation)))
+                {
+//                 System.out.println("IS this running 0?");
+                    System.out.println("simulate move returning false");
+                    return false;
+                }
+//             Point oldPoint  = new Point(CurrentSelectedPiece.CurrentPosition);
+                Point tempCurrentPosition = new Point(SourcePiece.CurrentPosition);
+                updatePiecePosition(tempCurrentPosition, DestinationLocation);
+                if( isInCheck(fetchKing(SourcePiece.PieceColor)))
+                {
+//                 System.out.println(CurrentColor  + "is in check");
+                    updatePiecePosition(DestinationLocation, tempCurrentPosition);
+                    Board[DestinationLocation.getX()][DestinationLocation.getY()] = DestinationPiece;
+                    if(DestinationPiece != null)
+                    {
+                        if(SourcePiece.PieceColor == Color.Black)
+                        {
+                            WhiteContainer.add(DestinationPiece);
+                        }
+                        else if(SourcePiece.PieceColor == Color.White)
+                        {
+                            BlackContainer.add(DestinationPiece);
+                        }
+                    }
+//                 System.out.println("This piece is in check:" + CurrentSelectedPiece );
+                    return false;
+
+                }
+                updatePiecePosition(DestinationLocation, tempCurrentPosition);
+                Board[DestinationLocation.getX()][DestinationLocation.getY()] = DestinationPiece;
+                if(DestinationPiece != null)
+                {
+                    if(SourcePiece.PieceColor == Color.Black)
+                    {
+                        WhiteContainer.add(DestinationPiece);
+                    }
+                    else if(SourcePiece.PieceColor == Color.White)
+                    {
+                        BlackContainer.add(DestinationPiece);
+                    }
+                }
+                return true;
+            }
+        }
+        return false;
+
+    }
  /**
   * Move a piece on the board from oldPosition to newPosition
   * @param oldPosition the old position of the piece to be moved, in other words, its current position
@@ -361,16 +477,19 @@ public  ArrayList<Piece> BlackContainer;
  {
      if(PieceColor == Color.Black)
      {
+         CurrentLegalMovesForBlack.clear();
          for(Piece p: BlackContainer)
          {
-             CurrentLegalMoves.put(p.CurrentPosition, computeLegalMoves(p));
+             CurrentLegalMovesForBlack.put(p.CurrentPosition, computeLegalMoves(p));
          }
      }
      else
          {
+             CurrentLegalMovesForWhite.clear();
+
              for(Piece p: WhiteContainer)
              {
-                 CurrentLegalMoves.put(p.CurrentPosition, computeLegalMoves(p));
+                 CurrentLegalMovesForWhite.put(p.CurrentPosition, computeLegalMoves(p));
              }
          }
  }
@@ -385,10 +504,14 @@ public  ArrayList<Piece> BlackContainer;
          for(int j =0;j<Board[i].length;j++)
          {
               temp = new Point(i,j);
-             if(Source.move(Board,temp ))
+//             simulateMove(Source,temp, null )
+//             Source.move(Board, temp)
+             if(!temp.equals(Source.CurrentPosition))
              {
-                 LegalMoves[MoveIndex] = temp;
-                 MoveIndex++;
+                 if (simulateMove(Source, temp, null)) {
+                     LegalMoves[MoveIndex] = temp;
+                     MoveIndex++;
+                 }
              }
          }
      }
@@ -409,7 +532,7 @@ public boolean attemptEveryMove(Piece pieceToMove)
          {
              continue;
          }
-         if(makeMove(source, AllLocations[i], null))
+//         if(makeMove(source, AllLocations[i], null))
          {
              return true;
          }
@@ -578,9 +701,6 @@ public boolean checkMate()
                 
                 
             }
-           
-
-            
             BoardImage.append(" ");
         }
         
@@ -592,16 +712,25 @@ public boolean checkMate()
     BoardImage.append("\n");
     return BoardImage.toString();
     }
-   public void signalLegalCells(Piece SignalPiece)
+   public void broadcastLegalCells(Piece SignalPiece)
    {
 
        unsignalCells();
-       for(Point p: getLegalMoves(SignalPiece))
+       signalLegalCells(SignalPiece);
+   }
+   public void signalLegalCells(Piece SignalPiece)
+   {
+       System.out.println("Signal Piece passed " + SignalPiece);
+       System.out.println("legal moves:" + getLegalMoves(SignalPiece));
+       if(getLegalMoves(SignalPiece) != null && SignalPiece.PieceColor == CurrentColor)
        {
-           ((ImageView) ((TableRow)ChessBoard.getChildAt(p.getX())).getChildAt(p.getY())).setBackgroundColor(NotifyColor);
-       }
-       CurrentPiece = SignalPiece;
 
+           for (Point p : getLegalMoves(SignalPiece))
+           {
+               ((ImageView) ((TableRow) ChessBoard.getChildAt(p.getX())).getChildAt(p.getY())).setBackgroundColor(NotifyColor);
+           }
+           CurrentSelectedPiece = SignalPiece;
+       }
    }
 
    public ImageView getCell(Point Position)
@@ -612,9 +741,9 @@ public boolean checkMate()
 
    public void unsignalCells()
    {
-       if(CurrentPiece != null)
+       if(CurrentSelectedPiece != null)
        {
-           Point[] LegalPoints = getLegalMoves(CurrentPiece);
+           Point[] LegalPoints = getLegalMoves(CurrentSelectedPiece);
            for(Point p : LegalPoints)
            {
                int neighborX = 0;
@@ -671,8 +800,13 @@ public boolean checkMate()
                    }
            }
        }
+       CurrentSelectedPiece = null;
    }
-    
+    public void setImageCell(Point DestinationCell, int ImageResourceTag)
+    {
+        getCell(DestinationCell).setImageResource(ImageResourceTag);
+        getCell(DestinationCell).setTag(ImageResourceTag);
+    }
 }
 
 
