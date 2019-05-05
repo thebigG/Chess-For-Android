@@ -19,6 +19,7 @@ import java.util.Arrays;
 public class MainActivity extends AppCompatActivity {
     private static final String CLICKEVENT = "CLICK_EVENT";
     public static final String STATE  = "BOARDSTATE";
+    public static final String ISSUE  = "LOGIC_ISSUE";
     private TableLayout ChessBoard;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,28 +50,33 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(View v) {
                                     Log.d(STATE,
-                                            ChessManager.toString());
+                                             "\n"+ChessManager.toString() + "\n " +"Current Color:" + ChessManager.CurrentColor);
                                     Piece TargetPiece = ChessManager.Board[x][y];
+                                    Point Destination = new Point(x, y);
+
                                     if(TargetPiece == null)
                                     {
                                         if (ChessManager.CurrentSelectedPiece != null)
                                         {
-                                            Point Destination = new Point(x, y);
+//                                            Log.d("First move for piece:" + ChessManager.CurrentSelectedPiece.FirstMove);
                                             System.out.println("Empassant? outside of simulate???");
 
-                                            if(ChessManager.simulateMove(ChessManager.CurrentSelectedPiece,Destination,null))
+                                            if(ChessManager.makeRealMove(Destination))
                                             {
-                                             //set proper images, hopefully play some animation
-//                                                ChessManager.broadcastLegalCells(CurrentPiece);
+                                             //TODO: Write this code in a function. Also remember to check for empassant and castiling inisde that function.
                                                 System.out.println("Empassant????");
-                                                ChessManager.setImageCell(Destination, (int)ChessManager.getCell(ChessManager.CurrentSelectedPiece.CurrentPosition ).getTag());
-                                                ChessManager.setImageCell(ChessManager.CurrentSelectedPiece.CurrentPosition, 0);
-                                                ChessManager.makeMove(Destination, "");
-                                                ChessManager.switchCurrentColor();
+//                                                Log.d(STATE, "Simulate move true for "  + ChessManager.CurrentSelectedPiece);
+//                                                ChessManager.setImageCell(Destination, (int)ChessManager.getCell(ChessManager.CurrentSelectedPiece.CurrentPosition ).getTag());
+//                                                ChessManager.setImageCell(ChessManager.CurrentSelectedPiece.CurrentPosition, 0);
+//                                                Log.d(STATE ,"Real move for "+  ChessManager.CurrentSelectedPiece+ ":"  +ChessManager.makeMove(Destination, null));
+//                                                ChessManager.switchCurrentColor();
+//                                                ChessManager.makeRealMove(Destination);
                                             }
                                             else
                                                 {
                                                     //Are you in check, stalemate?
+                                                    Log.d(STATE, "Simulate move false for " + ChessManager.CurrentSelectedPiece);
+
                                                 }
 
                                         }
@@ -80,21 +86,17 @@ public class MainActivity extends AppCompatActivity {
                                         {
                                             if (ChessManager.CurrentSelectedPiece != null)
                                             {
+                                                System.out.println("First move for piece:" + ChessManager.CurrentSelectedPiece.FirstMove);
+
                                                 if (TargetPiece.PieceColor == ChessManager.CurrentColor)
                                                 {
+//                                                    Log.d(STATE, "Is this where the problem is???");
                                                     ChessManager.broadcastLegalCells(TargetPiece);
                                                 }
                                                 else
                                                     {
-                                                        if(ChessManager.simulateMove(ChessManager.CurrentSelectedPiece,TargetPiece.CurrentPosition, "'"))
+                                                        if(ChessManager.makeRealMove(Destination))
                                                         {
-//                                                            ChessManager.broadcastLegalCells(TargetPiece);
-                                                            //set proper images, hopefully play some animation
-//                                                ChessManager.broadcastLegalCells(CurrentPiece);
-                                                            ChessManager.setImageCell(TargetPiece.CurrentPosition, (int)ChessManager.getCell(ChessManager.CurrentSelectedPiece.CurrentPosition ).getTag());
-                                                            ChessManager.setImageCell(ChessManager.CurrentSelectedPiece.CurrentPosition, 0);
-                                                            ChessManager.makeMove(TargetPiece.CurrentPosition, "");
-                                                            ChessManager.switchCurrentColor();
                                                             System.out.println("Attacking piece!");
                                                         }
                                                     }
@@ -104,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                                                 {
                                                     if(TargetPiece.PieceColor == ChessManager.CurrentColor)
                                                     {
-                                                        System.out.println("Broadcasting legal cells");
+//                                                        System.out.println("Broadcasting legal cells");
                                                         ChessManager.broadcastLegalCells(TargetPiece);
                                                     }
                                                 }
@@ -113,7 +115,8 @@ public class MainActivity extends AppCompatActivity {
                             });
                         }
                     }
-                }Log.d("anton",  i+"th piece" + ChessBoard.getChildAt(i).toString() );
+                }
+//                Log.d("anton",  i+"th piece" + ChessBoard.getChildAt(i).toString() );
 
         }
 //            ImageView myImage = (ImageView) ((TableRow)ChessBoard.getChildAt(0)).getChildAt(0);

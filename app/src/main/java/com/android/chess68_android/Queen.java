@@ -224,4 +224,9 @@ public class Queen extends Piece
    return false;
 
     }
+
+    @Override
+    public boolean simulateMove(Piece[][] Board, Point Destination) {
+        return move(Board, Destination);
+    }
 }

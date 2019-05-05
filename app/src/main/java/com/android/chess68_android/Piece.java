@@ -13,11 +13,12 @@ public abstract class Piece
 {
 
     protected  Color PieceColor;
-    protected boolean FirstMove;
+    public boolean FirstMove;
     protected Point CurrentPosition;
     
     public abstract boolean move(Piece[][] Board, Point Destination);
-    
+    public abstract boolean simulateMove(Piece[][] Board, Point Destination);
+
     public Piece(Point StartingLocation, Color PieceColor)
     {
       CurrentPosition = StartingLocation;

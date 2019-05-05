@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
+import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -378,7 +379,7 @@ public  ArrayList<Piece> BlackContainer;
             if((DestinationPiece == null || DestinationPiece.PieceColor != SourcePiece.PieceColor))
             {
 //             Point DestinationPoint = parseLocation(Destination);
-                if( !(SourcePiece.move(Board,DestinationLocation)))
+                if( !(SourcePiece.simulateMove(Board,DestinationLocation)))
                 {
 //                 System.out.println("IS this running 0?");
                     System.out.println("simulate move returning false");
@@ -439,6 +440,7 @@ public  ArrayList<Piece> BlackContainer;
      Piece tempDestinationPiece = Board[newPosition.getX()][newPosition.getY()];
      Board[oldPosition.getX()][oldPosition.getY()] = null;
      Board[newPosition.getX()][newPosition.getY()] = tempPiece;
+     if(tempPiece!=null)
      Board[newPosition.getX()][newPosition.getY()].setPosition(newPosition);
      if(tempDestinationPiece != null)
      {
@@ -806,6 +808,39 @@ public boolean checkMate()
     {
         getCell(DestinationCell).setImageResource(ImageResourceTag);
         getCell(DestinationCell).setTag(ImageResourceTag);
+    }
+//This function assumes that simulateMove has been called. DO NOT call this function without making sure that it is a legal move first!
+    public boolean makeRealMove(Point TargetDestination)
+    {
+        //call simulate move here instead??
+        if(!simulateMove(CurrentSelectedPiece, TargetDestination, null))
+        {
+            System.out.println("simulateMove is false for :" + CurrentSelectedPiece);
+            return false;
+        }
+        setImageCell(TargetDestination, (int)getCell(CurrentSelectedPiece.CurrentPosition ).getTag());
+       setImageCell(CurrentSelectedPiece.CurrentPosition, 0);
+       if(CurrentSelectedPiece.getName().equalsIgnoreCase("p"))
+       {
+           System.out.println("First move for piece:" + CurrentSelectedPiece.FirstMove);
+           if(CurrentSelectedPiece.CurrentPosition.getY() != TargetDestination.getY())
+           {
+            if(Board[TargetDestination.getX()][TargetDestination.getY()] == null)
+            {
+                if(CurrentSelectedPiece.PieceColor == Color.White)
+                {
+                    setImageCell(new Point(TargetDestination.getX() +1, TargetDestination.getY()) , 0);
+                }
+                else
+                    {
+                        setImageCell(new Point(TargetDestination.getX() -1, TargetDestination.getY()), 0);
+                    }
+            }
+           }
+       }
+        makeMove(TargetDestination, null);
+        switchCurrentColor();
+        return true;
     }
 }
 

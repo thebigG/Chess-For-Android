@@ -125,4 +125,9 @@ public class Knight  extends Piece
     }
        return false;
  }
+
+    @Override
+    public boolean simulateMove(Piece[][] Board, Point Destination) {
+        return move(Board, Destination);
+    }
 }

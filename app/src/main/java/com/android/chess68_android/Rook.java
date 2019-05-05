@@ -121,4 +121,9 @@ public class Rook extends Piece
    }
    return false;
  }
+
+    @Override
+    public boolean simulateMove(Piece[][] Board, Point Destination) {
+        return move(Board, Destination);
+    }
 }

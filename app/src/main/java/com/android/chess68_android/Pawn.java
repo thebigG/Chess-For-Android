@@ -32,7 +32,7 @@ public Pawn(Point StartingLocation, Color PieceColor)
 //        System.out.println("checking pawn");
         if(PieceColor ==Color.White)
         {
-//            System.out.println("White pawn");
+            Log.d(MainActivity.STATE, "White pawn");
 //            System.out.println("Going from " + this.CurrentPosition + "to " + Destination);
         if(Destination.getX()==CurrentPosition.getX() - 1 && Destination.getY() == CurrentPosition.getY())
         {
@@ -73,8 +73,8 @@ public Pawn(Point StartingLocation, Color PieceColor)
                     System.out.println("IS this pawn test running?");
                 if( ((Pawn)Board[CurrentPosition.getX()][Destination.getY()]).Empassant && Board[CurrentPosition.getX()][Destination.getY()].PieceColor != this.PieceColor  )
                     {
-                    BoardManager.getInstance().WhiteContainer.remove(Board[CurrentPosition.getX()][Destination.getY()]);
-                        Log.d(MainActivity.STATE,String.format("Setting White piece on (%d,%d) to null", CurrentPosition.getX(),Destination.getY() ));
+                    BoardManager.getInstance().BlackContainer.remove(Board[CurrentPosition.getX()][Destination.getY()]);
+                        Log.d(MainActivity.STATE,String.format("Setting Black piece on (%d,%d) to null", CurrentPosition.getX(),Destination.getY() ));
                         Board[CurrentPosition.getX()][Destination.getY()] = null;
                     return true;
                     }
@@ -84,7 +84,7 @@ public Pawn(Point StartingLocation, Color PieceColor)
         }
         else if(Destination.getX()==CurrentPosition.getX()- 2  && Destination.getY() == CurrentPosition.getY() && FirstMove )
         {
-            if(Board[Destination.getX()][Destination.getY()] == null)
+            if(Board[Destination.getX()][Destination.getY()] == null && Board[Destination.getX()-1][Destination.getY()] == null)
             {
                 Empassant = true;
                 return true;
@@ -96,7 +96,9 @@ public Pawn(Point StartingLocation, Color PieceColor)
     }
          else if(PieceColor ==Color.Black)
           {
-        if(Destination.getX()==CurrentPosition.getX() + 1 && Destination.getY() == CurrentPosition.getY())
+              Log.d(MainActivity.STATE, "Black pawn");
+
+              if(Destination.getX()==CurrentPosition.getX() + 1 && Destination.getY() == CurrentPosition.getY())
         {
             if(Board[Destination.getX()][Destination.getY()] == null)
             {
@@ -127,8 +129,8 @@ public Pawn(Point StartingLocation, Color PieceColor)
                 {
                 if( ((Pawn)Board[CurrentPosition.getX()][Destination.getY()]).Empassant &&  Board[CurrentPosition.getX()][Destination.getY()].PieceColor != this.PieceColor  )
                     {
-                    BoardManager.getInstance().BlackContainer.remove(Board[CurrentPosition.getX()][Destination.getY()]);
-                        Log.d(MainActivity.STATE,String.format("Setting Black piece on (%d,%d) to null", CurrentPosition.getX(),Destination.getY() ));
+                    BoardManager.getInstance().WhiteContainer.remove(Board[CurrentPosition.getX()][Destination.getY()]);
+                        Log.d(MainActivity.STATE,String.format("Setting White piece on (%d,%d) to null", CurrentPosition.getX(),Destination.getY() ));
                     Board[CurrentPosition.getX()][Destination.getY()] = null;
                     return true;
                     }
@@ -141,7 +143,7 @@ public Pawn(Point StartingLocation, Color PieceColor)
         
         else if(Destination.getX()==CurrentPosition.getX()+ 2  && Destination.getY() == CurrentPosition.getY() && FirstMove )
         {
-            if(Board[Destination.getX()][Destination.getY()] == null)
+            if(Board[Destination.getX()][Destination.getY()] == null && Board[Destination.getX() + 1][Destination.getY()] == null )
             {
                 Empassant = true;
                 return true;
@@ -152,6 +154,129 @@ public Pawn(Point StartingLocation, Color PieceColor)
          
 //        System.out.print("Returning false from pawn");
        return false;
+    }
+
+
+    public boolean simulateMove(Piece[][] Board, Point Destination)
+    {
+        //check if the destination  is legal
+//        System.out.println("checking pawn");
+        if(PieceColor ==Color.White)
+        {
+            Log.d(MainActivity.STATE, "White pawn");
+//            System.out.println("Going from " + this.CurrentPosition + "to " + Destination);
+            if(Destination.getX()==CurrentPosition.getX() - 1 && Destination.getY() == CurrentPosition.getY())
+            {
+                if(Board[Destination.getX()][Destination.getY()] == null)
+                {
+                    return true;
+                }
+                return false;
+
+
+//           System.out.println("returning pawn 1");
+
+            }
+            else if((Destination.getX() == CurrentPosition.getX() - 1 && Destination.getY()== CurrentPosition.getY()+1) || (Destination.getX() == CurrentPosition.getX() -1 ) &&  (Destination.getY()==CurrentPosition.getY() - 1))
+            {
+                if(Board[Destination.getX()][Destination.getY()] != null )
+                {
+                    if(Board[Destination.getX()][Destination.getY()].PieceColor != this.PieceColor )
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    System.out.println("IS this pawn ELSE test running?");
+                    System.out.println("PIece in question:" + Board[CurrentPosition.getX()][Destination.getY()]  );
+                    System.out.println("First test -->" + Board[CurrentPosition.getX()][Destination.getY()] != null);
+                    if(Board[CurrentPosition.getX()][Destination.getY()] != null && Board[CurrentPosition.getX()][Destination.getY()].getName().equalsIgnoreCase("p")  )
+                    {
+                        System.out.println("Second test-->"  + Board[CurrentPosition.getX()][Destination.getY()].getName().equalsIgnoreCase("p")  );
+                        System.out.println("IS this pawn test running?");
+                        if( ((Pawn)Board[CurrentPosition.getX()][Destination.getY()]).Empassant && Board[CurrentPosition.getX()][Destination.getY()].PieceColor != this.PieceColor  )
+                        {
+
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+            }
+            else if(Destination.getX()==CurrentPosition.getX()- 2  && Destination.getY() == CurrentPosition.getY() && FirstMove )
+            {
+                if(Board[Destination.getX()][Destination.getY()] == null &&  Board[CurrentPosition.getX()-1][Destination.getY()] == null )
+                {
+//                    Empassant = true;
+                    return true;
+                }
+                System.out.println("Is thi returning false!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                return false;
+
+//            System.out.println("returning pawn 3");
+            }
+        }
+        else if(PieceColor ==Color.Black)
+        {
+            Log.d(MainActivity.STATE, "Black pawn");
+
+            if(Destination.getX()==CurrentPosition.getX() + 1 && Destination.getY() == CurrentPosition.getY())
+            {
+                if(Board[Destination.getX()][Destination.getY()] == null)
+                {
+//                    Empassant  = false;
+                    return true;
+                }
+                return false;
+
+            }
+            else if((Destination.getX() == CurrentPosition.getX() + 1 && Destination.getY()== CurrentPosition.getY()+1) || (Destination.getX() == CurrentPosition.getX() +1 ) &&  (Destination.getY()==CurrentPosition.getY() - 1))
+            {
+                if(Board[Destination.getX()][Destination.getY()] != null )
+                {
+                    if(Board[Destination.getX()][Destination.getY()].PieceColor != this.PieceColor )
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+
+                    if(Board[CurrentPosition.getX()][Destination.getY()] != null && Board[CurrentPosition.getX()][Destination.getY()].getName().equalsIgnoreCase("p")  )
+                    {
+                        if( ((Pawn)Board[CurrentPosition.getX()][Destination.getY()]).Empassant &&  Board[CurrentPosition.getX()][Destination.getY()].PieceColor != this.PieceColor  )
+                        {
+
+                            return true;
+                        }
+                    }
+                }
+            }
+
+//            System.out.println("returning pawn 2");
+//            System.out.println("Black pawn");
+
+            else if(Destination.getX()==CurrentPosition.getX()+ 2  && Destination.getY() == CurrentPosition.getY() && FirstMove )
+            {
+                if(Board[Destination.getX()][Destination.getY()] == null && Board[CurrentPosition.getX()+1][Destination.getY()] == null)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+
+//        System.out.print("Returning false from pawn");
+        return false;
     }
          public  String getName()
  {
