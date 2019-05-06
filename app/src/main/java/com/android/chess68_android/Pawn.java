@@ -15,12 +15,16 @@ public class Pawn extends Piece
 {
     
 public boolean Empassant;
+public boolean EmpassantLeftAttack;
+public boolean EmpassanRighttAttack;
 public Pawn(Point StartingLocation, Color PieceColor)
 {
     super(StartingLocation, PieceColor);
     this.PieceColor = PieceColor;
     this.CurrentPosition = StartingLocation;
     Empassant = false;
+    EmpassantLeftAttack = false;
+    EmpassanRighttAttack = false;
 }
 
 
@@ -143,7 +147,7 @@ public Pawn(Point StartingLocation, Color PieceColor)
         
         else if(Destination.getX()==CurrentPosition.getX()+ 2  && Destination.getY() == CurrentPosition.getY() && FirstMove )
         {
-            if(Board[Destination.getX()][Destination.getY()] == null && Board[Destination.getX() + 1][Destination.getY()] == null )
+            if(Board[Destination.getX()][Destination.getY()] == null && Board[CurrentPosition.getX() + 1][Destination.getY()] == null )
             {
                 Empassant = true;
                 return true;

@@ -49,7 +49,7 @@ having to iterate over the entire board, which contains 64 empty sqaures--
  four times more than the actual number of pieces.
  Note that the cost of these containers is minimal as they are merely references that point to the actual objects.
 */
-public  ArrayList<Piece> BlackContainer; 
+public  ArrayList<Piece> BlackContainer;
  public  ArrayList<Piece> WhiteContainer;
  private Activity ChessActivity;
  public Piece CurrentSelectedPiece; //Piece that is currently selected by current player

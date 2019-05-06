@@ -230,61 +230,61 @@ public class King extends Piece
 
         }
 //        /**Castling Code
-         else if(CurrentPosition.getY() - 2 == Destination.getY()  && CurrentPosition.getX() ==Destination.getX()  )
-         {
-         //            System.out.println("Trying castling");
-         if(!inCheck)
-         {
-         //                System.out.println("Not in check");
-         if(FirstMove)
-         {
-         //                    System.out.println("First move is true");
-         Point RookPosition = new Point(Destination.getX(),CurrentPosition.getY() - 4 );
-         //                    System.out.println("Rook's position:" + RookPosition);
-         //                    System.out.println("Rook in question:" + Board[RookPosition.getX()][RookPosition.getY()]);
-         if(Board[ Destination.getX()][CurrentPosition.getY() - 4] != null)
-         {
-         //                       System.out.println("There is a piece on the target spot");
-         if(Board[Destination.getX()][CurrentPosition.getY() - 4].PieceColor == this.PieceColor && Board[ Destination.getX()][CurrentPosition.getY() - 4].getName().equals("R") && Board[ Destination.getX()][CurrentPosition.getY() - 4].FirstMove  )
-         {
-         //                           System.out.println("Entering the loop");
-         for(int i = 1;i<4 ;i++ )
-         {
-         if(Board[Destination.getX()][CurrentPosition.getY() - i] != null)
-         {
-         //                                   System.out.println("There is something in the way");
-         return false;
-         }
-         }
-         for(int i =1; i<=2;i++)
-         {
-         if(i<=2)
-         {
-         CurrentPosition.setY(CurrentPosition.getY() - 1);
-         if(  BoardManager.getInstance().isInCheck(this))
-         {
-         CurrentPosition.setY(CurrentPosition.getY() + i);
-         //                                       System.out.println("Trying to castle through check");
-         return false;
-         }
+             else if(CurrentPosition.getY() - 2 == Destination.getY()  && CurrentPosition.getX() ==Destination.getX()  )
+             {
+             //            System.out.println("Trying castling");
+                if(!inCheck)
+                {
+             //                System.out.println("Not in check");
+                 if(FirstMove)
+                {
+             //                    System.out.println("First move is true");
 
-         }
-         }
+             //                    System.out.println("Rook's position:" + RookPosition);
+             //                    System.out.println("Rook in question:" + Board[RookPosition.getX()][RookPosition.getY()]);
+             if(Board[ Destination.getX()][CurrentPosition.getY() - 4] != null)
+             {
+             //                       System.out.println("There is a piece on the target spot");
+             if(Board[Destination.getX()][CurrentPosition.getY() - 4].PieceColor == this.PieceColor && Board[ Destination.getX()][CurrentPosition.getY() - 4].getName().equals("R") && Board[ Destination.getX()][CurrentPosition.getY() - 4].FirstMove  )
+             {
+             //                           System.out.println("Entering the loop");
+             for(int i = 1;i<4 ;i++ )
+             {
+             if(Board[Destination.getX()][CurrentPosition.getY() - i] != null)
+             {
+             //                                   System.out.println("There is something in the way");
+             return false;
+             }
+             }
+             for(int i =1; i<=2;i++)
+             {
+             if(i<=2)
+             {
+             CurrentPosition.setY(CurrentPosition.getY() - 1);
+             if(  BoardManager.getInstance().isInCheck(this))
+             {
+             CurrentPosition.setY(CurrentPosition.getY() + i);
+             //                                       System.out.println("Trying to castle through check");
+             return false;
+             }
 
-         //                            System.out.println("Rook's position:" + RookPosition);
+             }
+             }
 
-//         BoardManager.getInstance().updatePiecePosition(RookPosition, new Point(Destination.getX(),CurrentPosition.getY() + 1));
-//         Board[RookPosition.getX()][RookPosition.getY()].FirstMove = false;
-//             BoardManager.getInstance().updatePiecePosition(new Point(Destination.getX(), CurrentPosition.getY() + 2), new Point(Destination.getX(), CurrentPosition.getY() ));
+             //                            System.out.println("Rook's position:" + RookPosition);
 
-         return true;
-         }
-         }
-         }
-         return false;
-         }
+    //         BoardManager.getInstance().updatePiecePosition(RookPosition, new Point(Destination.getX(),CurrentPosition.getY() + 1));
+    //         Board[RookPosition.getX()][RookPosition.getY()].FirstMove = false;
+    //             BoardManager.getInstance().updatePiecePosition(new Point(Destination.getX(), CurrentPosition.getY() + 2), new Point(Destination.getX(), CurrentPosition.getY() ));
 
-         }
+             return true;
+             }
+             }
+             }
+             return false;
+             }
+
+             }
 
          else if(CurrentPosition.getY() + 2 == Destination.getY()  && CurrentPosition.getX() ==Destination.getX()  )
          {

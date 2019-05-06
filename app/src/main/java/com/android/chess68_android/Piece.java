@@ -61,6 +61,25 @@ public boolean movePiece(Piece[][] Board, Point Destination)
     if(move(Board, Destination))
     {
         FirstMove = false;
+        if(this.PieceColor == Color.White)
+        {
+            for(Piece p: BoardManager.getInstance().WhiteContainer)
+            {
+                if(p instanceof Pawn && !p.CurrentPosition.equals(this.CurrentPosition))
+                {
+                    ((Pawn)(p)).Empassant = false;
+                }
+            }
+
+        }
+        else
+            for(Piece p: BoardManager.getInstance().BlackContainer)
+            {
+                if(p instanceof Pawn && !p.CurrentPosition.equals(this.CurrentPosition))
+                {
+                    ((Pawn)(p)).Empassant = false;
+                }
+            }
         return true;
     }
     return false;
