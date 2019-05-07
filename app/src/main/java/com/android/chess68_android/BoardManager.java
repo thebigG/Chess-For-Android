@@ -62,6 +62,12 @@ public  ArrayList<Piece> BlackContainer;
  public static int BlackKing = R.drawable.king;
  public static int BlackPawn = R.drawable.pawn;
  public static int BlackKnight = R.drawable.knight;
+    public static int WhiteBishop = R.drawable.wbishop;
+    public static int WhiteRook = R.drawable.wrook;
+    public static int WhiteQueen = R.drawable.wqueen;
+    public static int WhiteKing = R.drawable.wking;
+    public static int WhitePawn = R.drawable.wpawn;
+    public static int WhiteKnight = R.drawable.wknight;
  private BoardManager(Activity ChessActivity)
  {
      this.ChessActivity = ChessActivity;
@@ -179,8 +185,8 @@ public  ArrayList<Piece> BlackContainer;
                  Board[row][col] = new Pawn(new Point(row, col), Color.White);
                   WhiteContainer.add(WhiteContainerCounter, Board[row][col]) ;
                   WhiteContainerCounter++;
-                 ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setTag(BlackPawn);
-                 ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setImageResource(BlackPawn);
+                 ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setTag(WhitePawn);
+                 ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setImageResource(WhitePawn);
 
              }
              else if(row == 7)
@@ -190,8 +196,8 @@ public  ArrayList<Piece> BlackContainer;
                      Board[row][col] = new Rook(new Point(row, col), Color.White);
                      WhiteContainer.add(WhiteContainerCounter, Board[row][col]) ;
                      WhiteContainerCounter++;
-                     ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setTag(BlackRook);
-                     ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setImageResource(BlackRook);
+                     ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setTag(WhiteRook);
+                     ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setImageResource(WhiteRook);
 
 
                  }
@@ -200,8 +206,8 @@ public  ArrayList<Piece> BlackContainer;
                      Board[row][col] = new Knight(new Point(row, col), Color.White); 
                      WhiteContainer.add(WhiteContainerCounter, Board[row][col]) ;
                      WhiteContainerCounter++;
-                     ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setTag(BlackKnight);
-                     ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setImageResource(BlackKnight);
+                     ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setTag(WhiteKnight);
+                     ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setImageResource(WhiteKnight);
 
                  }
                 else if(col == 2 || col == 5)
@@ -209,16 +215,16 @@ public  ArrayList<Piece> BlackContainer;
                      Board[row][col] = new Bishop(new Point(row, col), Color.White); 
                      WhiteContainer.add(WhiteContainerCounter, Board[row][col]) ;
                      WhiteContainerCounter++;
-                     ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setImageResource(BlackBishop);
-                     ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setTag(BlackBishop);
+                     ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setImageResource(WhiteBishop);
+                     ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setTag(WhiteBishop);
                  }
                 else if(col ==  3)
                 {
                     Board[row][col] = new Queen(new Point(row, col), Color.White); 
                     WhiteContainer.add(WhiteContainerCounter, Board[row][col]) ;
                      WhiteContainerCounter++;
-                    ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setTag(BlackQueen);
-                    ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setImageResource(BlackQueen);
+                    ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setTag(WhiteQueen);
+                    ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setImageResource(WhiteQueen);
 
                 }
                   else if(col ==  4)
@@ -226,8 +232,8 @@ public  ArrayList<Piece> BlackContainer;
                     Board[row][col] = new King(new Point(row, col), Color.White);
                     WhiteContainer.add(WhiteContainerCounter, Board[row][col]) ;
                      WhiteContainerCounter++;
-                    ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setTag(BlackKing);
-                    ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setImageResource(BlackKing);
+                    ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setTag(WhiteKing);
+                    ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setImageResource(WhiteKing);
                 }
              }
          }
@@ -315,7 +321,6 @@ public  ArrayList<Piece> BlackContainer;
              updatePiecePosition(tempCurrentPosition, DestinationLocation);
              if( isInCheck(fetchKing(CurrentColor)))
              {
-                 
 //                 System.out.println(CurrentColor  + "is in check");
                  updatePiecePosition(DestinationLocation, tempCurrentPosition);
                  Board[DestinationLocation.getX()][DestinationLocation.getY()] = DestinationPiece;
