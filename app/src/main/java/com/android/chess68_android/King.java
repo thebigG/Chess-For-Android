@@ -86,7 +86,7 @@ public class King extends Piece {
 //                            System.out.println("Rook's position:" + RookPosition);
 
                             BoardManager.getInstance().updatePiecePosition(RookPosition, new Point(Destination.getX(), CurrentPosition.getY() + 1));
-                            Board[RookPosition.getX()][RookPosition.getY()].FirstMove = false;
+                            Board[RookPosition.getX()][CurrentPosition.getY() + 1].FirstMove = false;
                             BoardManager.getInstance().updatePiecePosition(new Point(Destination.getX(), CurrentPosition.getY() + 2), new Point(Destination.getX(), CurrentPosition.getY()));
 
                             return true;
@@ -184,7 +184,8 @@ public class King extends Piece {
 //        /**Castling Code
         else if (PieceColor == Color.White)
         {
-            if (CurrentPosition.getY() - 2 == Destination.getY() && CurrentPosition.getX() == Destination.getX() && CurrentPosition.getX() == 7) {
+            System.out.println("Tyring castling on white king");
+            if (CurrentPosition.getY() - 2 == Destination.getY() && CurrentPosition.getX() == Destination.getX() && Destination.getX() == 7) {
                 //            System.out.println("Trying castling");
                 System.out.println(String.format("True for white1 on destination:%s on this piece's location:%s" , Destination, CurrentPosition));
                 if (!inCheck) {
@@ -212,6 +213,7 @@ public class King extends Piece {
                                         CurrentPosition.setY(CurrentPosition.getY() - 1);
                                         if (BoardManager.getInstance().isInCheck(this)) {
                                             CurrentPosition.setY(CurrentPosition.getY() + i);
+                                            System.out.println("False for king 20:" + Destination);
                                             //                                       System.out.println("Trying to castle through check");
                                             return false;
                                         }
@@ -231,66 +233,18 @@ public class King extends Piece {
                             }
                         }
                     }
+                    System.out.println("False for king 8:" + Destination);
                     return false;
                 }
 
             }
-            if (CurrentPosition.getY() - 2 == Destination.getY() && CurrentPosition.getX() == Destination.getX() && CurrentPosition.getX() == 7) {
-                //            System.out.println("Trying castling");
-                System.out.println(String.format("True for white2 on destination:%s on this piece's location:%s" , Destination, CurrentPosition));
-                if (!inCheck) {
-                    //                System.out.println("Not in check");
-                    if (FirstMove) {
-                        //                    System.out.println("First move is true");
-
-                        //                    System.out.println("Rook's position:" + RookPosition);
-                        //                    System.out.println("Rook in question:" + Board[RookPosition.getX()][RookPosition.getY()]);
-                        if (Board[Destination.getX()][CurrentPosition.getY() - 4] != null) {
-                            //                       System.out.println("There is a piece on the target spot");
-                            if (Board[Destination.getX()][CurrentPosition.getY() - 4].PieceColor == this.PieceColor && Board[Destination.getX()][CurrentPosition.getY() - 4].getName().equals("R") && Board[Destination.getX()][CurrentPosition.getY() - 4].FirstMove) {
-                                //                           System.out.println("Entering the loop");
-                                for (int i = 1; i < 4; i++) {
-                                    if (Board[Destination.getX()][CurrentPosition.getY() - i] != null) {
-                                        //                                   System.out.println("There is something in the way");
-                                        return false;
-                                    }
-                                }
-                                int temp_i =0;
-                                for (int i = 1; i <= 2; i++) {
-                                    temp_i = i;
-                                    if (i <= 2) {
-
-                                        CurrentPosition.setY(CurrentPosition.getY() - 1);
-                                        if (BoardManager.getInstance().isInCheck(this)) {
-                                            CurrentPosition.setY(CurrentPosition.getY() + i);
-                                            //                                       System.out.println("Trying to castle through check");
-                                            return false;
-                                        }
-
-                                    }
-                                }
-                                CurrentPosition.setY(CurrentPosition.getY() + temp_i);
-
-
-                                //                            System.out.println("Rook's position:" + RookPosition);
-
-                                //         BoardManager.getInstance().updatePiecePosition(RookPosition, new Point(Destination.getX(),CurrentPosition.getY() + 1));
-                                //         Board[RookPosition.getX()][RookPosition.getY()].FirstMove = false;
-                                //             BoardManager.getInstance().updatePiecePosition(new Point(Destination.getX(), CurrentPosition.getY() + 2), new Point(Destination.getX(), CurrentPosition.getY() ));
-                                System.out.println("True for king 9:" + Destination);
-
-                                return true;
-                            }
-                        }
-                    }
-                    return false;
-                } else if (CurrentPosition.getY() + 2 == Destination.getY() && CurrentPosition.getX() == Destination.getX() && CurrentPosition.getX() == 7) {
+             else if ((CurrentPosition.getY() + 2 == Destination.getY()) && (CurrentPosition.getX() == Destination.getX()) && (Destination.getX() == 7)) {
                     //            System.out.println("Trying castling");
+                    System.out.println("Trying castling #1");
                     if (!inCheck) {
                         //                System.out.println("Not in check");
                         if (FirstMove) {
                             //                    System.out.println("First move is true");
-                            Point RookPosition = new Point(Destination.getX(), CurrentPosition.getY() + 3);
                             //                    System.out.println("Rook's position:" + RookPosition);
                             //                    System.out.println("Rook in question:" + Board[RookPosition.getX()][RookPosition.getY()]);
                             if (Board[Destination.getX()][CurrentPosition.getY() + 3] != null) {
@@ -313,6 +267,8 @@ public class King extends Piece {
                                             CurrentPosition.setY(CurrentPosition.getY() + 1);
                                             if (BoardManager.getInstance().isInCheck(this))
                                             {
+                                                System.out.println("False for king 10:" + Destination);
+
                                                 CurrentPosition.setY(CurrentPosition.getY() - i);
                                                 //                                       System.out.println("Trying to castle through check");
                                                 return false;
@@ -328,15 +284,16 @@ public class King extends Piece {
                                 }
                             }
                         }
+                        System.out.println("False for king 11:" + Destination);
                         return false;
                     }
 
                 }
-            }
+
         }
         else if(PieceColor == Color.Black)
         {
-            if (CurrentPosition.getY() - 2 == Destination.getY() && CurrentPosition.getX() == Destination.getX() && CurrentPosition.getX() == 0)
+            if (CurrentPosition.getY() - 2 == Destination.getY() && CurrentPosition.getX() == Destination.getX() && Destination.getX() == 0)
             {
                 System.out.println(String.format("True for black1 on destination:%s on this piece's location:%s" , Destination, CurrentPosition));
                 //            System.out.println("Trying castling");
@@ -386,54 +343,9 @@ public class King extends Piece {
                 }
 
             }
-            if (CurrentPosition.getY() - 2 == Destination.getY() && CurrentPosition.getX() == Destination.getX() && Destination.getX() == 0) {
-                //            System.out.println("Trying castling");
-                System.out.println(String.format("True for black2 on destination:%s on this piece's location:%s" , Destination, CurrentPosition));
-                if (!inCheck) {
-                    //                System.out.println("Not in check");
-                    if (FirstMove) {
-                        //                    System.out.println("First move is true");
 
-                        //                    System.out.println("Rook's position:" + RookPosition);
-                        //                    System.out.println("Rook in question:" + Board[RookPosition.getX()][RookPosition.getY()]);
-                        if (Board[Destination.getX()][CurrentPosition.getY() - 4] != null) {
-                            //                       System.out.println("There is a piece on the target spot");
-                            if (Board[Destination.getX()][CurrentPosition.getY() - 4].PieceColor == this.PieceColor && Board[Destination.getX()][CurrentPosition.getY() - 4].getName().equals("R") && Board[Destination.getX()][CurrentPosition.getY() - 4].FirstMove) {
-                                //                           System.out.println("Entering the loop");
-                                for (int i = 1; i < 4; i++) {
-                                    if (Board[Destination.getX()][CurrentPosition.getY() - i] != null) {
-                                        //                                   System.out.println("There is something in the way");
-                                        return false;
-                                    }
-                                }
-                                int temp_i = 0;
-                                for (int i = 1; i <= 2; i++) {
-                                    temp_i = i;
-                                    if (i <= 2) {
-                                        CurrentPosition.setY(CurrentPosition.getY() - 1);
-                                        if (BoardManager.getInstance().isInCheck(this)) {
-                                            CurrentPosition.setY(CurrentPosition.getY() + i);
-                                            //                                       System.out.println("Trying to castle through check");
-                                            return false;
-                                        }
-
-                                    }
-                                }
-
-                                //                            System.out.println("Rook's position:" + RookPosition);
-
-                                //         BoardManager.getInstance().updatePiecePosition(RookPosition, new Point(Destination.getX(),CurrentPosition.getY() + 1));
-                                //         Board[RookPosition.getX()][RookPosition.getY()].FirstMove = false;
-                                //             BoardManager.getInstance().updatePiecePosition(new Point(Destination.getX(), CurrentPosition.getY() + 2), new Point(Destination.getX(), CurrentPosition.getY() ));
-                                System.out.println("True for king:" + Destination);
-                                CurrentPosition.setY(CurrentPosition.getY() + temp_i);
-                                return true;
-                            }
-                        }
-                    }
-                    return false;
-                }
-                else if (CurrentPosition.getY() + 2 == Destination.getY() && CurrentPosition.getX() == Destination.getX() && Destination.getX() == 0) {
+                else if (CurrentPosition.getY() + 2 == Destination.getY() && CurrentPosition.getX() == Destination.getX() && Destination.getX() == 0)
+                {
                     //            System.out.println("Trying castling");
                     if (!inCheck) {
                         //                System.out.println("Not in check");
@@ -477,13 +389,14 @@ public class King extends Piece {
 
                 }
             }
-        }
+        return false;
 
-
-            return false;
-
-
-        }
     }
+
+
+
+
+        }
+
 
 

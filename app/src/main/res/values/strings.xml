@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Chess68_Android</string>
+    <string name="SecondPlayer">Player 2(Black) </string>>
+    <string name="FirstPlayer">Player 1(White) </string>>
+    <string name = "CurrentPlayer">Current Player:</string>
 </resources>

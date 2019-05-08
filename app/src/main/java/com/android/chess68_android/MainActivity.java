@@ -20,20 +20,20 @@ public class MainActivity extends AppCompatActivity {
     private static final String CLICKEVENT = "CLICK_EVENT";
     public static final String STATE  = "BOARDSTATE";
     public static final String ISSUE  = "LOGIC_ISSUE";
-    private TableLayout ChessBoard;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
        final BoardManager ChessManager =  BoardManager.getInstance(this);
-            ChessBoard = (TableLayout) findViewById(R.id.Board);
-            for(int i =0;i<8;i++)
+        BoardManager.getInstance().updateCurrentPlayerPrompt();
+        for(int i =0;i<8;i++)
             {
-                View temp = ChessBoard.getChildAt(i);
+                View temp = BoardManager.getInstance().ChessBoard.getChildAt(i);
                 if(temp instanceof TableRow)
                 {
 //                    temp.setClickable(true);
-
+                    BoardManager.getInstance().updateCurrentPlayerPrompt();
                     for(int j =0;j<8;j++)
                     {
                         ImageView imageTemp =(ImageView) (( (TableRow)temp).getChildAt(j));
@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
                                     new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+                                    BoardManager.getInstance().updateCurrentPlayerPrompt();
                                     Log.d(STATE,
                                              "\n"+ChessManager.toString() + "\n " +"Current Color:" + ChessManager.CurrentColor);
                                     Piece TargetPiece = ChessManager.Board[x][y];
@@ -119,11 +120,17 @@ public class MainActivity extends AppCompatActivity {
 //                Log.d("anton",  i+"th piece" + ChessBoard.getChildAt(i).toString() );
 
         }
-//            ImageView myImage = (ImageView) ((TableRow)ChessBoard.getChildAt(0)).getChildAt(0);
-//            myImage.setImageResource(R.drawable.rook);
-//            myImage.setTag(R.drawable.rook, R.drawable.rook);
-//            myImage.getTag
-//            myImage.setOnTouchListener(new AppCompatActivity().new);
+        BoardManager.getInstance().UndoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                if(BoardManager.getInstance().LastPlayedPiece!= null)
+                {
+                    BoardManager.getInstance().undoMove();
+                }
+            }
+        });
+
         System.out.println("caching pieces!");
         ChessManager.cacheLegalMoves(Color.White);
 

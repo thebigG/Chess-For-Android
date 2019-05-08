@@ -15,16 +15,13 @@ public class Pawn extends Piece
 {
     
 public boolean Empassant;
-public boolean EmpassantLeftAttack;
-public boolean EmpassanRighttAttack;
 public Pawn(Point StartingLocation, Color PieceColor)
 {
     super(StartingLocation, PieceColor);
     this.PieceColor = PieceColor;
     this.CurrentPosition = StartingLocation;
     Empassant = false;
-    EmpassantLeftAttack = false;
-    EmpassanRighttAttack = false;
+
 }
 
 
@@ -43,7 +40,9 @@ public Pawn(Point StartingLocation, Color PieceColor)
             if(Board[Destination.getX()][Destination.getY()] == null)
             {
             Empassant = false;
-            return true;
+            BoardManager.getInstance().LastAttackedPiece = Board[Destination.getX()][Destination.getY()];
+            System.out.println("Assigned this piece to LastAttacked Piece pawn:" + Board[Destination.getX()][Destination.getY()]);
+                return true;
             }
             return false;
             
@@ -58,6 +57,8 @@ public Pawn(Point StartingLocation, Color PieceColor)
                 if(Board[Destination.getX()][Destination.getY()].PieceColor != this.PieceColor )
                 {
                     Empassant  = false;
+                    BoardManager.getInstance().LastAttackedPiece = Board[Destination.getX()][Destination.getY()];
+                    System.out.println("Assigned this piece to LastAttacked Piece pawn:" + Board[Destination.getX()][Destination.getY()]);
                     return true;
                 }
                 else
@@ -78,6 +79,8 @@ public Pawn(Point StartingLocation, Color PieceColor)
                 if( ((Pawn)Board[CurrentPosition.getX()][Destination.getY()]).Empassant && Board[CurrentPosition.getX()][Destination.getY()].PieceColor != this.PieceColor  )
                     {
                     BoardManager.getInstance().BlackContainer.remove(Board[CurrentPosition.getX()][Destination.getY()]);
+                        BoardManager.getInstance().LastAttackedPiece =  Board[CurrentPosition.getX()][Destination.getY()];
+                        System.out.println("Assigned this piece to LastAttacked Piece pawn:" + Board[Destination.getX()][Destination.getY()]);
                         Log.d(MainActivity.STATE,String.format("Setting Black piece on (%d,%d) to null", CurrentPosition.getX(),Destination.getY() ));
                         Board[CurrentPosition.getX()][Destination.getY()] = null;
                     return true;
@@ -88,9 +91,11 @@ public Pawn(Point StartingLocation, Color PieceColor)
         }
         else if(Destination.getX()==CurrentPosition.getX()- 2  && Destination.getY() == CurrentPosition.getY() && FirstMove )
         {
-            if(Board[Destination.getX()][Destination.getY()] == null && Board[Destination.getX()-1][Destination.getY()] == null)
+            if(Board[Destination.getX()][Destination.getY()] == null && Board[CurrentPosition.getX()-1][Destination.getY()] == null)
             {
                 Empassant = true;
+                BoardManager.getInstance().LastAttackedPiece = Board[Destination.getX()][Destination.getY()];
+                System.out.println("Assigned this piece to LastAttacked Piece pawn:" + Board[Destination.getX()][Destination.getY()]);
                 return true;
             }
              return false;
@@ -107,6 +112,8 @@ public Pawn(Point StartingLocation, Color PieceColor)
             if(Board[Destination.getX()][Destination.getY()] == null)
             {
                 Empassant  = false;
+                BoardManager.getInstance().LastAttackedPiece = Board[Destination.getX()][Destination.getY()];
+                System.out.println("Assigned this piece to LastAttacked Piece pawn:" + Board[Destination.getX()][Destination.getY()]);
                 return true;
             }
             return false;
@@ -119,6 +126,8 @@ public Pawn(Point StartingLocation, Color PieceColor)
                 if(Board[Destination.getX()][Destination.getY()].PieceColor != this.PieceColor )
                 {
                     Empassant  = false;
+                    BoardManager.getInstance().LastAttackedPiece = Board[Destination.getX()][Destination.getY()];
+                    System.out.println("Assigned this piece to LastAttacked Piece pawn:" + Board[Destination.getX()][Destination.getY()]);
                     return true;
                 }
                 else
@@ -132,7 +141,9 @@ public Pawn(Point StartingLocation, Color PieceColor)
                 if(Board[CurrentPosition.getX()][Destination.getY()] != null && Board[CurrentPosition.getX()][Destination.getY()].getName().equalsIgnoreCase("p")  )
                 {
                 if( ((Pawn)Board[CurrentPosition.getX()][Destination.getY()]).Empassant &&  Board[CurrentPosition.getX()][Destination.getY()].PieceColor != this.PieceColor  )
-                    {
+                {
+                    BoardManager.getInstance().LastAttackedPiece = Board[CurrentPosition.getX()][Destination.getY()];
+                    System.out.println("Assigned this piece to LastAttacked Piece pawn:" + Board[Destination.getX()][Destination.getY()]);
                     BoardManager.getInstance().WhiteContainer.remove(Board[CurrentPosition.getX()][Destination.getY()]);
 //                        Log.d(MainActivity.STATE,String.format("Setting White piece on (%d,%d) to null", CurrentPosition.getX(),Destination.getY() ));
                     Board[CurrentPosition.getX()][Destination.getY()] = null;
@@ -149,6 +160,8 @@ public Pawn(Point StartingLocation, Color PieceColor)
         {
             if(Board[Destination.getX()][Destination.getY()] == null && Board[CurrentPosition.getX() + 1][Destination.getY()] == null )
             {
+                BoardManager.getInstance().LastAttackedPiece = Board[Destination.getX()][Destination.getY()];
+                System.out.println("Assigned this piece to LastAttacked Piece pawn:" + Board[Destination.getX()][Destination.getY()]);
                 Empassant = true;
                 return true;
             }

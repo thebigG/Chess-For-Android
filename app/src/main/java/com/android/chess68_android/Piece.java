@@ -15,7 +15,7 @@ public abstract class Piece
     protected  Color PieceColor;
     public boolean FirstMove;
     protected Point CurrentPosition;
-    
+    public int moveCounter = 0;
     public abstract boolean move(Piece[][] Board, Point Destination);
     public abstract boolean simulateMove(Piece[][] Board, Point Destination);
 
@@ -61,6 +61,7 @@ public boolean movePiece(Piece[][] Board, Point Destination)
     if(move(Board, Destination))
     {
         FirstMove = false;
+        moveCounter++;
         if(this.PieceColor == Color.White)
         {
             for(Piece p: BoardManager.getInstance().WhiteContainer)

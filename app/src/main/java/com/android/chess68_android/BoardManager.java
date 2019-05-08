@@ -10,9 +10,13 @@ import android.app.Activity;
 import android.graphics.drawable.ColorDrawable;
 import android.renderscript.Element;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.lang.annotation.Target;
 import java.util.ArrayList;
@@ -34,6 +38,7 @@ public class BoardManager
 
 private  final String[] row_label = {"8","7","6","5", "4", "3", "2", "1"};
 private  final String col_label = "a  b  c  d  e  f  g  h";
+
 private String[] AllLocations = null ; // All of the locations of the board to be pre-loaded before the math begin
 private static BoardManager Instance;
 private StringBuilder BoardImage; //used for representing the board as a simple, mutable string
@@ -42,7 +47,14 @@ public King CurrentKing;
 private HashMap<Point, Point[]> CurrentLegalMovesForBlack;
 private HashMap<Point, Point[]> CurrentLegalMovesForWhite;
 public Color CurrentColor = Color.White;
-private TableLayout ChessBoard;
+public TableLayout ChessBoard;
+public Button  UndoButton;
+public TextView CurrentPlayerPrompt;
+public Piece LastAttackedPiece; //undo variable
+public Point LastDestinationPlayed; //undo variable
+public Piece LastPlayedPiece;
+public Point LastSourcePositionPlayed;
+public int LastImageViewTag;
  /*
 These containers allow us to optimize iteration over all of the pieces, without 
 having to iterate over the entire board, which contains 64 empty sqaures--
@@ -62,7 +74,7 @@ public  ArrayList<Piece> BlackContainer;
  public static int BlackKing = R.drawable.king;
  public static int BlackPawn = R.drawable.pawn;
  public static int BlackKnight = R.drawable.knight;
-    public static int WhiteBishop = R.drawable.wbishop;
+ public static int WhiteBishop = R.drawable.wbishop;
     public static int WhiteRook = R.drawable.wrook;
     public static int WhiteQueen = R.drawable.wqueen;
     public static int WhiteKing = R.drawable.wking;
@@ -71,6 +83,8 @@ public  ArrayList<Piece> BlackContainer;
  private BoardManager(Activity ChessActivity)
  {
      this.ChessActivity = ChessActivity;
+     UndoButton = this.ChessActivity.findViewById(R.id.undo_button);
+     CurrentPlayerPrompt = (TextView)ChessActivity.findViewById(R.id.CurrentPlayer);
      ChessBoard = (TableLayout) ChessActivity.findViewById(R.id.Board);
      Board = new Piece[8][8];
      AllLocations = new String[64];
@@ -103,9 +117,9 @@ public  ArrayList<Piece> BlackContainer;
  {
      if(Source != null)
      {
-         System.out.println("Is this running??");
+//         System.out.println("Is this running??");
          if(Source.PieceColor == Color.White) {
-             System.out.println();
+//             System.out.println();
              return CurrentLegalMovesForWhite.get(Source.CurrentPosition);
          }
          else
@@ -127,6 +141,7 @@ public  ArrayList<Piece> BlackContainer;
      {
          for(int col = 0;col<Board[row].length;col++)
          {
+             ((ImageView) ((TableRow)ChessBoard.getChildAt(row)).getChildAt(col)).setTag(0);
              if(row == 0)
              {
                  if(col == 0 || col == 7)
@@ -251,12 +266,14 @@ public  ArrayList<Piece> BlackContainer;
      {
          CurrentColor = Color.White;
               CurrentKing = fetchKing(CurrentColor);
+         updateCurrentPlayerPrompt();
          cacheLegalMoves(Color.White);
          return;
      }
    
      CurrentColor = Color.Black;
      CurrentKing = fetchKing(CurrentColor);
+     updateCurrentPlayerPrompt();
      cacheLegalMoves(Color.Black);
  }
 
@@ -321,6 +338,10 @@ public  ArrayList<Piece> BlackContainer;
              updatePiecePosition(tempCurrentPosition, DestinationLocation);
              if( isInCheck(fetchKing(CurrentColor)))
              {
+                 if(CurrentSelectedPiece.getName().equalsIgnoreCase("p"))
+                 {
+                     //handle empassant
+                 }
 //                 System.out.println(CurrentColor  + "is in check");
                  updatePiecePosition(DestinationLocation, tempCurrentPosition);
                  Board[DestinationLocation.getX()][DestinationLocation.getY()] = DestinationPiece;
@@ -369,6 +390,37 @@ public  ArrayList<Piece> BlackContainer;
      return false;
  
  }
+ public void undoMove()
+ {
+     if(LastPlayedPiece.moveCounter == 1)
+     {
+         LastPlayedPiece.FirstMove = true;
+         LastPlayedPiece.moveCounter--;
+     }
+     System.out.println("UndoMove: LastPlayedPiece:" + LastPlayedPiece);
+     System.out.println("UndoMove: LastSourcePosition:" + LastSourcePositionPlayed);
+     System.out.println("UndoMove: LastAttackedPiece:" + LastAttackedPiece);
+     Board[LastSourcePositionPlayed.getX()][LastSourcePositionPlayed.getY()] = LastPlayedPiece;
+     LastPlayedPiece.setPosition(LastSourcePositionPlayed);
+     Board[LastDestinationPlayed.getX()][LastDestinationPlayed.getY()] = LastAttackedPiece;
+     setImageCell(LastSourcePositionPlayed, (int)getCell(LastDestinationPlayed).getTag());
+     setImageCell(LastDestinationPlayed, 0);
+     if(LastAttackedPiece != null)
+     {
+         LastAttackedPiece.setPosition(LastDestinationPlayed);
+         setImageCell(LastAttackedPiece.CurrentPosition, LastImageViewTag );
+         if(CurrentColor == Color.Black)
+         {
+             BlackContainer.add(LastAttackedPiece);
+         }
+         else
+             {
+                 WhiteContainer.add(LastAttackedPiece);
+             }
+     }
+     switchCurrentColor();
+
+ }
     public boolean simulateMove(Piece SourcePiece, Point DestinationLocation, String Promotion)
     {
 
@@ -387,16 +439,16 @@ public  ArrayList<Piece> BlackContainer;
                 if( !(SourcePiece.simulateMove(Board,DestinationLocation)))
                 {
 //                 System.out.println("IS this running 0?");
-                    System.out.println("simulate move returning false");
+//                    System.out.println("simulate move returning false");
                     return false;
                 }
 //             Point oldPoint  = new Point(CurrentSelectedPiece.CurrentPosition);
                 Point tempCurrentPosition = new Point(SourcePiece.CurrentPosition);
-                updatePiecePosition(tempCurrentPosition, DestinationLocation);
+                simulateUpdatePiecePosition(tempCurrentPosition, DestinationLocation);
                 if( isInCheck(fetchKing(SourcePiece.PieceColor)))
                 {
 //                 System.out.println(CurrentColor  + "is in check");
-                    updatePiecePosition(DestinationLocation, tempCurrentPosition);
+                    simulateUpdatePiecePosition(DestinationLocation, tempCurrentPosition);
                     Board[DestinationLocation.getX()][DestinationLocation.getY()] = DestinationPiece;
                     if(DestinationPiece != null)
                     {
@@ -413,7 +465,7 @@ public  ArrayList<Piece> BlackContainer;
                     return false;
 
                 }
-                updatePiecePosition(DestinationLocation, tempCurrentPosition);
+                simulateUpdatePiecePosition(DestinationLocation, tempCurrentPosition);
                 Board[DestinationLocation.getX()][DestinationLocation.getY()] = DestinationPiece;
                 if(DestinationPiece != null)
                 {
@@ -452,15 +504,63 @@ public  ArrayList<Piece> BlackContainer;
          if(tempDestinationPiece.PieceColor == Color.Black)
          {
              BlackContainer.remove(tempDestinationPiece);
+             LastAttackedPiece = tempDestinationPiece;
+//             LastImageView
          }
          else if(tempDestinationPiece.PieceColor == Color.White)
          {
              WhiteContainer.remove(tempDestinationPiece);
+             LastAttackedPiece = tempDestinationPiece;
 
          }
+//         System.out.println("Assigned this piece to LastAttacked Piece:" + tempDestinationPiece);
      }
+     else
+         {
+             if(tempPiece != null && !tempPiece.getName().equalsIgnoreCase("p"))
+             {
+                 LastAttackedPiece = null;
+             }
+         }
+
+
+        System.out.println("Assigned this piece to LastAttacked Piece:" + tempDestinationPiece);
     }
+
  }
+    public void simulateUpdatePiecePosition(Point oldPosition, Point newPosition)
+    {
+        if(!oldPosition.equals(newPosition))
+        {
+            Piece tempPiece = Board[oldPosition.getX()][oldPosition.getY()];
+            Piece tempDestinationPiece = Board[newPosition.getX()][newPosition.getY()];
+            Board[oldPosition.getX()][oldPosition.getY()] = null;
+            Board[newPosition.getX()][newPosition.getY()] = tempPiece;
+            if(tempPiece!=null)
+                Board[newPosition.getX()][newPosition.getY()].setPosition(newPosition);
+            if(tempDestinationPiece != null)
+            {
+                if(tempDestinationPiece.PieceColor == Color.Black)
+                {
+                    BlackContainer.remove(tempDestinationPiece);
+//                    LastAttackedPiece = tempDestinationPiece;
+//             LastImageView
+                }
+                else if(tempDestinationPiece.PieceColor == Color.White)
+                {
+                    WhiteContainer.remove(tempDestinationPiece);
+//                    LastAttackedPiece = tempDestinationPiece;
+
+                }
+//         System.out.println("Assigned this piece to LastAttacked Piece:" + tempDestinationPiece);
+            }
+
+
+
+//            System.out.println("Assigned this piece to LastAttacked Piece:" + tempDestinationPiece);
+        }
+
+    }
  /**
   * Pre-load into memory ALL of the positions of the board in the form of a string array.
   * This will make it faster and easier to check checkmate and stalemate
@@ -727,8 +827,8 @@ public boolean checkMate()
    }
    public void signalLegalCells(Piece SignalPiece)
    {
-       System.out.println("Signal Piece passed " + SignalPiece);
-       System.out.println("legal moves:" + getLegalMoves(SignalPiece));
+//       System.out.println("Signal Piece passed " + SignalPiece);
+//       System.out.println("legal moves:" + getLegalMoves(SignalPiece));
        if(getLegalMoves(SignalPiece) != null && SignalPiece.PieceColor == CurrentColor)
        {
 
@@ -742,7 +842,7 @@ public boolean checkMate()
 
    public ImageView getCell(Point Position)
    {
-       System.out.println("getting this cell;" + Position);
+//       System.out.println("getting this cell;" + Position);
        return (ImageView) ((TableRow)ChessBoard.getChildAt(Position.getX())).getChildAt(Position.getY());
    }
 
@@ -759,7 +859,7 @@ public boolean checkMate()
                int NeighborColor = 0;
                for(int i =1;i<8;i++)
                {
-                   System.out.println("Current index:" + i);
+//                   System.out.println("Current index:" + i);
                    if(p.getX() - i >=0)
                    {
                        neighborX = p.getX() - i;
@@ -789,7 +889,7 @@ public boolean checkMate()
                ImageView LegalCell = getCell(p);
                if(Math.abs(NeighborLocation.getX() - p.getX()) == Math.abs(NeighborLocation.getY() - p.getY()))
                {
-                   System.out.println("Square Neighbor location:" + NeighborLocation);
+//                   System.out.println("Square Neighbor location:" + NeighborLocation);
                    LegalCell.setBackgroundColor(NeighborColor);
                }
                else
@@ -814,39 +914,72 @@ public boolean checkMate()
         getCell(DestinationCell).setImageResource(ImageResourceTag);
         getCell(DestinationCell).setTag(ImageResourceTag);
     }
-//This function assumes that simulateMove has been called. DO NOT call this function without making sure that it is a legal move first!
     public boolean makeRealMove(Point TargetDestination)
     {
-        //call simulate move here instead??
         if(!simulateMove(CurrentSelectedPiece, TargetDestination, null))
         {
-            System.out.println("simulateMove is false for :" + CurrentSelectedPiece);
+//            System.out.println("simulateMove is false for :" + CurrentSelectedPiece);
             return false;
         }
+        LastImageViewTag =(int) getCell(TargetDestination).getTag();
         setImageCell(TargetDestination, (int)getCell(CurrentSelectedPiece.CurrentPosition ).getTag());
        setImageCell(CurrentSelectedPiece.CurrentPosition, 0);
        if(CurrentSelectedPiece.getName().equalsIgnoreCase("p"))
        {
-           System.out.println("First move for piece:" + CurrentSelectedPiece.FirstMove);
+//           System.out.println("First move for piece:" + CurrentSelectedPiece.FirstMove);
            if(CurrentSelectedPiece.CurrentPosition.getY() != TargetDestination.getY())
            {
             if(Board[TargetDestination.getX()][TargetDestination.getY()] == null)
             {
                 if(CurrentSelectedPiece.PieceColor == Color.White)
                 {
+                    LastImageViewTag = (int)getCell(new Point(TargetDestination.getX() +1, TargetDestination.getY())).getTag();
                     setImageCell(new Point(TargetDestination.getX() +1, TargetDestination.getY()) , 0);
                 }
                 else
                     {
+                        LastImageViewTag = (int)getCell(new Point(TargetDestination.getX() -1, TargetDestination.getY())).getTag();
                         setImageCell(new Point(TargetDestination.getX() -1, TargetDestination.getY()), 0);
                     }
             }
            }
        }
+       else if(CurrentSelectedPiece.getName().equalsIgnoreCase("k"))
+       {
+           int YDifference =  CurrentSelectedPiece.CurrentPosition.getY() - TargetDestination.getY();
+           if(YDifference == -2)
+           {
+               setImageCell(new Point( TargetDestination.getX() ,TargetDestination.getY() -1), (int)getCell( new Point(CurrentSelectedPiece.getCurrentPosition().getX(), CurrentSelectedPiece.getCurrentPosition().getY() + 3 )).getTag());
+               setImageCell(new Point(CurrentSelectedPiece.getCurrentPosition().getX(), CurrentSelectedPiece.getCurrentPosition().getY() + 3 ), 0);
+           }
+           else if(YDifference == 2)
+           {
+               setImageCell(new Point( TargetDestination.getX() ,TargetDestination.getY() +1), (int)getCell( new Point(CurrentSelectedPiece.getCurrentPosition().getX(), CurrentSelectedPiece.getCurrentPosition().getY() - 4 )).getTag());
+               setImageCell(new Point(CurrentSelectedPiece.getCurrentPosition().getX(), CurrentSelectedPiece.getCurrentPosition().getY() - 4 ), 0);
+           }
+       }
+        LastPlayedPiece = CurrentSelectedPiece;
+        LastAttackedPiece = null;
+        LastDestinationPlayed = new Point(TargetDestination);
+        LastSourcePositionPlayed = new Point(CurrentSelectedPiece.CurrentPosition);
         makeMove(TargetDestination, null);
         switchCurrentColor();
         return true;
     }
+    public void updateCurrentPlayerPrompt()
+    {
+        String temp = null;
+        if(CurrentColor == Color.Black)
+        {
+//            temp =
+            CurrentPlayerPrompt.setText(ChessActivity.getResources().getString(R.string.CurrentPlayer) + ChessActivity.getResources().getString(R.string.SecondPlayer));
+        }
+        else
+            {
+                CurrentPlayerPrompt.setText(ChessActivity.getResources().getString(R.string.CurrentPlayer)  + ChessActivity.getResources().getString(R.string.FirstPlayer));
+            }
+    }
 }
+
 
 
