@@ -392,6 +392,7 @@ public  ArrayList<Piece> BlackContainer;
  }
  public void undoMove()
  {
+
      if(LastPlayedPiece.moveCounter == 1)
      {
          LastPlayedPiece.FirstMove = true;
@@ -418,8 +419,58 @@ public  ArrayList<Piece> BlackContainer;
                  WhiteContainer.add(LastAttackedPiece);
              }
      }
+     if(LastPlayedPiece.getName().equalsIgnoreCase("K"))
+     {
+         if(LastPlayedPiece.PieceColor == Color.White)
+         {
+             if(LastPlayedPiece.CurrentPosition.getX() == 7)
+             {
+                 if(LastSourcePositionPlayed.getY() - LastDestinationPlayed.getY() == 2)
+                 {
+                     Board[LastPlayedPiece.CurrentPosition.getX()][0] = Board[LastPlayedPiece.CurrentPosition.getX()][LastPlayedPiece.CurrentPosition.getY()-1];
+                     setImageCell(new Point(LastPlayedPiece.CurrentPosition.getX(), 0), (int)getCell(new Point(LastPlayedPiece.CurrentPosition.getX(),LastPlayedPiece.CurrentPosition.getY()-1 )).getTag());
+                     setImageCell(new Point(LastPlayedPiece.CurrentPosition.getX(),LastPlayedPiece.CurrentPosition.getY()-1 ), 0);
+                     Board[LastPlayedPiece.CurrentPosition.getX()][0].setPosition(LastPlayedPiece.CurrentPosition.getX(), 0);
+                     Board[LastPlayedPiece.CurrentPosition.getX()][LastPlayedPiece.CurrentPosition.getY()-1].FirstMove = true;
+                     Board[LastPlayedPiece.CurrentPosition.getX()][LastPlayedPiece.CurrentPosition.getY()-1] = null ;
+                 }
+                 else if(LastSourcePositionPlayed.getY() - LastDestinationPlayed.getY() == -2)
+                 {
+                     Board[LastPlayedPiece.CurrentPosition.getX()][7] = Board[LastPlayedPiece.CurrentPosition.getX()][LastPlayedPiece.CurrentPosition.getY()+1];
+                     setImageCell(new Point(LastPlayedPiece.CurrentPosition.getX(), 7), (int)getCell(new Point(LastPlayedPiece.CurrentPosition.getX(),LastPlayedPiece.CurrentPosition.getY()+1 )).getTag());
+                     setImageCell(new Point(LastPlayedPiece.CurrentPosition.getX(),LastPlayedPiece.CurrentPosition.getY()+1 ), 0);
+                     Board[LastPlayedPiece.CurrentPosition.getX()][7].setPosition(LastPlayedPiece.CurrentPosition.getX(), 7);
+                     Board[LastPlayedPiece.CurrentPosition.getX()][LastPlayedPiece.CurrentPosition.getY()+1].FirstMove = true;
+                     Board[LastPlayedPiece.CurrentPosition.getX()][LastPlayedPiece.CurrentPosition.getY()+1] = null ;
+                 }
+             }
+         }
+         else if(LastPlayedPiece.PieceColor == Color.Black)
+         {
+             if(LastPlayedPiece.CurrentPosition.getX() == 0)
+             {
+                 if(LastSourcePositionPlayed.getY() - LastDestinationPlayed.getY() == 2)
+                 {
+                     Board[LastPlayedPiece.CurrentPosition.getX()][0] = Board[LastPlayedPiece.CurrentPosition.getX()][LastPlayedPiece.CurrentPosition.getY()-1];
+                     setImageCell(new Point(LastPlayedPiece.CurrentPosition.getX(), 0), (int)getCell(new Point(LastPlayedPiece.CurrentPosition.getX(),LastPlayedPiece.CurrentPosition.getY()-1 )).getTag());
+                     setImageCell(new Point(LastPlayedPiece.CurrentPosition.getX(),LastPlayedPiece.CurrentPosition.getY()-1 ), 0);
+                     Board[LastPlayedPiece.CurrentPosition.getX()][0].setPosition(LastPlayedPiece.CurrentPosition.getX(), 0);
+                     Board[LastPlayedPiece.CurrentPosition.getX()][LastPlayedPiece.CurrentPosition.getY()-1].FirstMove = true;
+                     Board[LastPlayedPiece.CurrentPosition.getX()][LastPlayedPiece.CurrentPosition.getY()-1] = null ;
+                 }
+                 else if(LastSourcePositionPlayed.getY() - LastDestinationPlayed.getY() == -2)
+                 {
+                     Board[LastPlayedPiece.CurrentPosition.getX()][7] = Board[LastPlayedPiece.CurrentPosition.getX()][LastPlayedPiece.CurrentPosition.getY()+1];
+                     setImageCell(new Point(LastPlayedPiece.CurrentPosition.getX(), 7), (int)getCell(new Point(LastPlayedPiece.CurrentPosition.getX(),LastPlayedPiece.CurrentPosition.getY()+1 )).getTag());
+                     setImageCell(new Point(LastPlayedPiece.CurrentPosition.getX(),LastPlayedPiece.CurrentPosition.getY()+1 ), 0);
+                     Board[LastPlayedPiece.CurrentPosition.getX()][7].setPosition(LastPlayedPiece.CurrentPosition.getX(), 7);
+                     Board[LastPlayedPiece.CurrentPosition.getX()][LastPlayedPiece.CurrentPosition.getY()+1].FirstMove = true;
+                     Board[LastPlayedPiece.CurrentPosition.getX()][LastPlayedPiece.CurrentPosition.getY()+1] = null ;
+                 }
+             }
+         }
+     }
      switchCurrentColor();
-
  }
     public boolean simulateMove(Piece SourcePiece, Point DestinationLocation, String Promotion)
     {
