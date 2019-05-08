@@ -149,9 +149,9 @@ public class MainActivity extends AppCompatActivity {
         });
         BoardManager.getInstance().RandomButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 BoardManager.getInstance().makeRandomMove();
-
             }
         });
 
