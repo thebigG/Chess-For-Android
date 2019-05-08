@@ -3,4 +3,8 @@
     <string name="SecondPlayer">Player 2(Black) </string>>
     <string name="FirstPlayer">Player 1(White) </string>>
     <string name = "CurrentPlayer">Current Player:</string>
+    <string name  = "CurrentCheck">In Check:</string>
+    <string name="Nobody">Nobody</string>
+    <string name="BlackWins">Black Wins!</string>
+    <string name="WhiteWins">White Wins!</string>
 </resources>

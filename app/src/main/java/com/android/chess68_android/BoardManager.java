@@ -21,7 +21,10 @@ import org.w3c.dom.Text;
 import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Random;
+import java.util.Set;
 
 import javax.xml.transform.Source;
 
@@ -39,7 +42,7 @@ public class BoardManager
 private  final String[] row_label = {"8","7","6","5", "4", "3", "2", "1"};
 private  final String col_label = "a  b  c  d  e  f  g  h";
 
-private String[] AllLocations = null ; // All of the locations of the board to be pre-loaded before the math begin
+private Point[] AllLocations = null ; // All of the locations of the board to be pre-loaded before the math begin
 private static BoardManager Instance;
 private StringBuilder BoardImage; //used for representing the board as a simple, mutable string
 public  Piece[][] Board;
@@ -55,6 +58,8 @@ public Point LastDestinationPlayed; //undo variable
 public Piece LastPlayedPiece;
 public Point LastSourcePositionPlayed;
 public int LastImageViewTag;
+public TextView InCheckView;
+public Button RandomButton;
  /*
 These containers allow us to optimize iteration over all of the pieces, without 
 having to iterate over the entire board, which contains 64 empty sqaures--
@@ -84,10 +89,12 @@ public  ArrayList<Piece> BlackContainer;
  {
      this.ChessActivity = ChessActivity;
      UndoButton = this.ChessActivity.findViewById(R.id.undo_button);
+     InCheckView = this.ChessActivity.findViewById(R.id.InCheckView);
+     RandomButton = this.ChessActivity.findViewById(R.id.Random_Button);
      CurrentPlayerPrompt = (TextView)ChessActivity.findViewById(R.id.CurrentPlayer);
      ChessBoard = (TableLayout) ChessActivity.findViewById(R.id.Board);
      Board = new Piece[8][8];
-     AllLocations = new String[64];
+     AllLocations = new Point[64];
      BoardImage  = new StringBuilder(128);
      BlackContainer = new ArrayList<>(16);
      WhiteContainer = new ArrayList<>(16);
@@ -268,15 +275,67 @@ public  ArrayList<Piece> BlackContainer;
               CurrentKing = fetchKing(CurrentColor);
          updateCurrentPlayerPrompt();
          cacheLegalMoves(Color.White);
+         updateCheckStatus();
          return;
      }
    
      CurrentColor = Color.Black;
      CurrentKing = fetchKing(CurrentColor);
+     updateCheckStatus();
      updateCurrentPlayerPrompt();
      cacheLegalMoves(Color.Black);
  }
+ public void makeRandomMove()
+ {
+     CurrentSelectedPiece = null;
+     int RandomKeyIndex = 0;
+     int RandomDestinationIndex = 0;
+     Random randomTemp = new Random();
+     if(CurrentColor == Color.Black)
+     {
+         Point[] LegalPiecePositions = null;
+         Point[] LegalDestinations = null;
+         do
+         {
+             LegalPiecePositions = new Point[CurrentLegalMovesForBlack.keySet().toArray().length];
+             LegalPiecePositions = CurrentLegalMovesForBlack.keySet().toArray(LegalPiecePositions);
+             Point LegalTempPositoin = LegalPiecePositions[randomTemp.nextInt(LegalPiecePositions.length)];
+             CurrentSelectedPiece = Board[LegalTempPositoin.getX()][LegalTempPositoin.getY()];
+             System.out.println("Random selected piece:" + CurrentSelectedPiece);
+             LegalDestinations = CurrentLegalMovesForBlack.get(CurrentSelectedPiece.CurrentPosition);
+         }while(LegalDestinations.length <= 0);
+         makeRealMove(LegalDestinations[randomTemp.nextInt(LegalDestinations.length)]);
+     }
+     else {
+//             CurrentLegalMovesForWhite.keySet().toArray()
+         Point[] LegalPiecePositions = null;
+         Point[] LegalDestinations = null;
+         do
+         {
+             LegalPiecePositions = new Point[CurrentLegalMovesForWhite.keySet().toArray().length];
+         LegalPiecePositions = CurrentLegalMovesForWhite.keySet().toArray(LegalPiecePositions);
+         Point LegalTempPositoin = LegalPiecePositions[randomTemp.nextInt(LegalPiecePositions.length)];
+         CurrentSelectedPiece = Board[LegalTempPositoin.getX()][LegalTempPositoin.getY()];
+         System.out.println("Random selected piece:" + CurrentSelectedPiece);
+         LegalDestinations = CurrentLegalMovesForWhite.get(CurrentSelectedPiece.CurrentPosition);
+     }while(LegalDestinations.length <= 0);
+             makeRealMove(LegalDestinations[randomTemp.nextInt(LegalDestinations.length)]);
+         }
+ }
+public void updateCheckStatus()
+{
+    InCheckView.setText(ChessActivity.getResources().getString(R.string.CurrentCheck));
+    if(CurrentKing.inCheck)
+    {
 
+        InCheckView.setText(InCheckView.getText() + CurrentKing.PieceColor.toString());
+    }
+    else
+        {
+            InCheckView.setText(InCheckView.getText() + ChessActivity.getResources().getString(R.string.Nobody));
+
+        }
+}
  public boolean checkBounds(String Location)
  {
 //     System.out.println("length of location:" + Location.length());
@@ -618,13 +677,13 @@ public  ArrayList<Piece> BlackContainer;
   */
  public void preloadLocations()
  {
-     String[] cols = col_label.split("  ");
+//     String[] cols = col_label.split("  ");
      int counter = 0;
-     for(int i  = 0;i<cols.length;i++)
+     for(int i  = 0;i<Board.length;i++)
      {
-         for(int j = 0;j<row_label.length;j++)
+         for(int j = 0;j<Board.length;j++)
          {
-             AllLocations[counter] = cols[i] + row_label[j];
+             AllLocations[counter] = new Point(i,j);
 //             System.out.println("Board locations: " + Arrays.toString(AllLocations));
              counter++;
          }
@@ -686,10 +745,7 @@ public boolean attemptEveryMove(Piece pieceToMove)
      String source  = parsePoint(pieceToMove.CurrentPosition);
      for(int i =0;i<AllLocations.length;i++)
      {
-         if(source.equalsIgnoreCase(AllLocations[i]))
-         {
-             continue;
-         }
+
 //         if(makeMove(source, AllLocations[i], null))
          {
              return true;
@@ -701,26 +757,13 @@ public boolean checkMate()
 {
     if(CurrentColor == Color.Black)
     {
-        for(Piece p: BlackContainer)
-        {
-            if(attemptEveryMove(p))
-            {
-                return false;
-            }
-        }
+        return CurrentLegalMovesForBlack.isEmpty();
     }
     else
     {
-     for(Piece p: WhiteContainer)
-        {
-            if(attemptEveryMove(p))
-            {
-                return false;
-            }
-        }   
+     return CurrentLegalMovesForWhite.isEmpty();
     }
-    return true;
-    
+
 }
  public boolean isInCheck(Piece CheckKing)
  {

@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.Toast;
 
 import java.util.Arrays;
 
@@ -45,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
 
 //                            Log.d("WTF??", imageTemp.toString());
                             System.out.println("setting up the listner for ImageTemp:");
-                            imageTemp.setOnClickListener(
+                            imageTemp.setOnClickListener
+                                    (
                                     new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -112,6 +114,21 @@ public class MainActivity extends AppCompatActivity {
                                                     }
                                                 }
                                     }
+                                    if(BoardManager.getInstance().checkMate())
+                                    {
+                                        if(BoardManager.getInstance().CurrentColor == Color.Black)
+                                        {
+                                            Toast.makeText(MainActivity.this
+                                                    , R.string.WhiteWins,
+                                                    Toast.LENGTH_LONG).show();
+                                        }
+                                        else
+                                            {
+                                                Toast.makeText(MainActivity.this
+                                                        , R.string.BlackWins,
+                                                        Toast.LENGTH_LONG).show();
+                                            }
+                                    }
                                 }
                             });
                         }
@@ -128,6 +145,13 @@ public class MainActivity extends AppCompatActivity {
                 {
                     BoardManager.getInstance().undoMove();
                 }
+            }
+        });
+        BoardManager.getInstance().RandomButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BoardManager.getInstance().makeRandomMove();
+
             }
         });
 
