@@ -60,6 +60,9 @@ public Point LastSourcePositionPlayed;
 public int LastImageViewTag;
 public TextView InCheckView;
 public Button RandomButton;
+public Button ResignButton;
+public Button DrawButton;
+public boolean undoAble = false;
  /*
 These containers allow us to optimize iteration over all of the pieces, without 
 having to iterate over the entire board, which contains 64 empty sqaures--
@@ -90,6 +93,8 @@ public  ArrayList<Piece> BlackContainer;
      this.ChessActivity = ChessActivity;
      UndoButton = this.ChessActivity.findViewById(R.id.undo_button);
      InCheckView = this.ChessActivity.findViewById(R.id.InCheckView);
+     DrawButton = this.ChessActivity.findViewById(R.id.Draw_Button);
+     ResignButton = this.ChessActivity.findViewById(R.id.Resign_Button)
      RandomButton = this.ChessActivity.findViewById(R.id.Random_Button);
      CurrentPlayerPrompt = (TextView)ChessActivity.findViewById(R.id.CurrentPlayer);
      ChessBoard = (TableLayout) ChessActivity.findViewById(R.id.Board);
@@ -529,6 +534,7 @@ public void updateCheckStatus()
              }
          }
      }
+     updateUndoAble(false);
      switchCurrentColor();
  }
     public boolean simulateMove(Piece SourcePiece, Point DestinationLocation, String Promotion)
@@ -1082,7 +1088,13 @@ public boolean checkMate()
         LastSourcePositionPlayed = new Point(CurrentSelectedPiece.CurrentPosition);
         makeMove(TargetDestination, null);
         switchCurrentColor();
+        updateUndoAble(true);
         return true;
+    }
+    public void updateUndoAble(boolean undo)
+    {
+        undoAble = undo;
+       UndoButton.setEnabled(undo);
     }
     public void updateCurrentPlayerPrompt()
     {
