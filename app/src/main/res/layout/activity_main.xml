@@ -535,6 +535,12 @@
             android:layout_height="wrap_content"
             android:enabled="false"
             android:text="Undo" />
+
+        <Spinner
+            android:id="@+id/PromotionSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
     </LinearLayout>
 
     <TextView

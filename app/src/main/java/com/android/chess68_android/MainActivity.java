@@ -51,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
                                     new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+                                    System.out.println("User home dir:" + ChessManager.UserHome);
+                                    System.out.println("Game date:" + ChessManager.GameDate);
                                     if(ChessManager.DrawGame)
                                     {
                                         System.out.println("DRAW GAME!!!!!!!!!!!!!!");

@@ -7,10 +7,15 @@ package com.android.chess68_android;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.ContextWrapper;
+import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
 import android.renderscript.Element;
+import android.text.InputType;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -19,9 +24,16 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.lang.annotation.Target;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Random;
@@ -37,12 +49,12 @@ import javax.xml.transform.Source;
  * Note that this class is a singleton class-there is ONLY ONE instance for it in the lifetime of the game.
  */
 
-public class BoardManager 
+public class BoardManager  implements Serializable
 {
 
 private  final String[] row_label = {"8","7","6","5", "4", "3", "2", "1"};
 private  final String col_label = "a  b  c  d  e  f  g  h";
-
+private static final long serialVersionUID = 15;
 private Point[] AllLocations = null ; // All of the locations of the board to be pre-loaded before the math begin
 private static BoardManager Instance;
 private StringBuilder BoardImage; //used for representing the board as a simple, mutable string
@@ -67,6 +79,9 @@ public boolean undoAble = false;
 public boolean DrawGame = false;
 public Color WhoWon  = null;
 public boolean DidGameEnd = false;
+public String GameTitle;
+public  String UserHome;
+//        new ContextWrapper().getFilesDir();
  /*
 These containers allow us to optimize iteration over all of the pieces, without 
 having to iterate over the entire board, which contains 64 empty sqaures--
@@ -76,6 +91,7 @@ having to iterate over the entire board, which contains 64 empty sqaures--
 public  ArrayList<Piece> BlackContainer;
  public  ArrayList<Piece> WhiteContainer;
  private Activity ChessActivity;
+ public String GameDate = null;
  public Piece CurrentSelectedPiece; //Piece that is currently selected by current player
  public static int NotifyColor;
  public static int DarkColor;
@@ -92,9 +108,14 @@ public  ArrayList<Piece> BlackContainer;
     public static int WhiteKing = R.drawable.wking;
     public static int WhitePawn = R.drawable.wpawn;
     public static int WhiteKnight = R.drawable.wknight;
+
  private BoardManager(Activity ChessActivity)
  {
      this.ChessActivity = ChessActivity;
+     DateFormat date = new SimpleDateFormat("MMM dd yyyy, h:mm");
+     String dateFormatted = date.format(Calendar.getInstance().getTime());
+     GameDate = dateFormatted;
+     UserHome =  new ContextWrapper(ChessActivity).getFilesDir().getAbsolutePath();
      UndoButton = this.ChessActivity.findViewById(R.id.undo_button);
      InCheckView = this.ChessActivity.findViewById(R.id.InCheckView);
      DrawButton = this.ChessActivity.findViewById(R.id.Draw_Button);
@@ -123,6 +144,11 @@ public  ArrayList<Piece> BlackContainer;
      {
          Instance  = new BoardManager(ChessActivity);
      }
+     else
+         {
+             Instance.ChessActivity = ChessActivity;
+         }
+
      return Instance;
  }
     public static BoardManager getInstance()
@@ -145,7 +171,39 @@ public  ArrayList<Piece> BlackContainer;
      }
      return null;
  }
+public static void saveGame(BoardManager Game) throws IOException {
+    FileOutputStream fout = new FileOutputStream(Game.UserHome + Game.GameTitle);
+    ObjectOutputStream oos = new ObjectOutputStream(fout);
+    //save game
+}
+public void proptToSaveGame()
+{
+    AlertDialog.Builder builder = new AlertDialog.Builder(ChessActivity);
+    builder.setTitle("Give your awesome game a title and save it!");
 
+// Set up the input
+    final EditText input = new EditText(ChessActivity);
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+    input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+    builder.setView(input);
+
+// Set up the buttons
+    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            GameTitle = input.getText().toString();
+//            saveGame(BoardManager.this);
+        }
+    });
+    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            dialog.cancel();
+        }
+    });
+
+    builder.show();
+}
  /**
   * Generates an initial board to start the game with. This function also sets up the containers.
   */
@@ -1055,6 +1113,21 @@ public boolean checkMate()
        if(CurrentSelectedPiece.getName().equalsIgnoreCase("p"))
        {
 //           System.out.println("First move for piece:" + CurrentSelectedPiece.FirstMove);
+           if(CurrentSelectedPiece.PieceColor == Color.White && TargetDestination.getX() == 0)
+           {
+               System.out.println("DRAW GAME!!!!!!!!!!!!!!");
+               Toast.makeText(ChessActivity
+                       , "Your pawn is now a queen!",
+                       Toast.LENGTH_LONG).show();
+               setImageCell(new Point(TargetDestination.getX(), TargetDestination.getY()), R.drawable.wqueen);
+           }
+           else if(CurrentSelectedPiece.PieceColor == Color.Black && TargetDestination.getX() == 7)
+           {
+               Toast.makeText(ChessActivity
+                       , "Your pawn is now a queen!",
+                       Toast.LENGTH_LONG).show();
+               setImageCell(new Point(TargetDestination.getX(), TargetDestination.getY()), R.drawable.queen);
+           }
            if(CurrentSelectedPiece.CurrentPosition.getY() != TargetDestination.getY())
            {
             if(Board[TargetDestination.getX()][TargetDestination.getY()] == null)
