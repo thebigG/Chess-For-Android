@@ -51,6 +51,19 @@ public class MainActivity extends AppCompatActivity {
                                     new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+                                    if(ChessManager.DrawGame)
+                                    {
+                                        System.out.println("DRAW GAME!!!!!!!!!!!!!!");
+                                        Toast.makeText(MainActivity.this
+                                                , R.string.DrawGame,
+                                                Toast.LENGTH_LONG).show();
+                                        return;
+                                    }
+                                    if(ChessManager.DidGameEnd)
+                                    {
+                                        ChessManager.showWhoWon();
+                                        return;
+                                    }
                                     BoardManager.getInstance().updateCurrentPlayerPrompt();
                                     Log.d(STATE,
                                              "\n"+ChessManager.toString() + "\n " +"Current Color:" + ChessManager.CurrentColor);
@@ -116,21 +129,8 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                     if(BoardManager.getInstance().checkMate())
                                     {
-                                        if(BoardManager.getInstance().CurrentColor == Color.Black)
-                                        {
-                                            Toast.makeText(MainActivity.this
-                                                    , R.string.WhiteWins,
-                                                    Toast.LENGTH_LONG).show();
-                                            System.out.println("********************White WINS!!!!!!!!!!!!");
-                                        }
-                                        else
-                                            {
-                                                Toast.makeText(MainActivity.this
-                                                        , R.string.BlackWins,
-                                                        Toast.LENGTH_LONG).show();
-                                                System.out.println("********************Black WINS!!!!!!!!!!!!");
-
-                                            }
+                                        ChessManager.endGame(ChessManager.CurrentColor);
+                                        ChessManager.showWhoWon();
                                     }
                                     else
                                         {
@@ -151,6 +151,19 @@ public class MainActivity extends AppCompatActivity {
             {
                 if(BoardManager.getInstance().LastPlayedPiece!= null)
                 {
+                    if(ChessManager.DrawGame)
+                    {
+                        System.out.println("DRAW GAME!!!!!!!!!!!!!!");
+                        Toast.makeText(MainActivity.this
+                                , R.string.DrawGame,
+                                Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    if(ChessManager.DidGameEnd)
+                    {
+                        ChessManager.showWhoWon();
+                        return;
+                    }
                     BoardManager.getInstance().undoMove();
                 }
             }
@@ -159,6 +172,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
+
+                {
+                    if(ChessManager.DrawGame)
+                    {
+                        System.out.println("DRAW GAME!!!!!!!!!!!!!!");
+                        Toast.makeText(MainActivity.this
+                                , R.string.DrawGame,
+                                Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    if(ChessManager.DidGameEnd)
+                    {
+                        ChessManager.showWhoWon();
+                        return;
+                    }
+                }
                 BoardManager.getInstance().makeRandomMove();
             }
         });
@@ -166,6 +195,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
+                if(ChessManager.DrawGame)
+                {
+                    System.out.println("DRAW GAME!!!!!!!!!!!!!!");
+                    Toast.makeText(MainActivity.this
+                            , R.string.DrawGame,
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(ChessManager.DidGameEnd)
+                {
+                    ChessManager.showWhoWon();
+                    return;
+                }
                 if(ChessManager.DrawButton.getText().equals(getResources().getString(R.string.DrawQ)))
                 {
                     ChessManager.DrawGame = true;
@@ -176,6 +218,25 @@ public class MainActivity extends AppCompatActivity {
                 }
                 ChessManager.switchCurrentColor();;
                 ChessManager.DrawButton.setText(R.string.DrawQ);
+            }
+        });
+        ChessManager.ResignButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(ChessManager.CurrentColor == Color.Black)
+                {
+                    ChessManager.endGame(Color.White);
+                    ChessManager.showWhoWon();
+
+                }
+                else
+                    {
+
+
+                        ChessManager.endGame(Color.Black);
+                        ChessManager.showWhoWon();
+
+                    }
             }
         });
 

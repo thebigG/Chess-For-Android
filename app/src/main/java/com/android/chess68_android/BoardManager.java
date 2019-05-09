@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -64,6 +65,8 @@ public Button ResignButton;
 public Button DrawButton;
 public boolean undoAble = false;
 public boolean DrawGame = false;
+public Color WhoWon  = null;
+public boolean DidGameEnd = false;
  /*
 These containers allow us to optimize iteration over all of the pieces, without 
 having to iterate over the entire board, which contains 64 empty sqaures--
@@ -1109,6 +1112,26 @@ public boolean checkMate()
             {
                 CurrentPlayerPrompt.setText(ChessActivity.getResources().getString(R.string.CurrentPlayer)  + ChessActivity.getResources().getString(R.string.FirstPlayer));
             }
+    }
+    public void endGame(Color WinningColor)
+    {
+        WhoWon = WinningColor;
+        DidGameEnd = true;
+    }
+    public void showWhoWon()
+    {
+        if(WhoWon == Color.Black)
+        {
+            Toast.makeText(ChessActivity
+                    , R.string.BlackWins,
+                    Toast.LENGTH_LONG).show();
+        }
+        else if(WhoWon == Color.White)
+        {
+            Toast.makeText(ChessActivity
+                    , R.string.WhiteWins,
+                    Toast.LENGTH_LONG).show();
+        }
     }
 }
 
