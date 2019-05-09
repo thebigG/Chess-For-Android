@@ -162,6 +162,22 @@ public class MainActivity extends AppCompatActivity {
                 BoardManager.getInstance().makeRandomMove();
             }
         });
+        ChessManager.DrawButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                if(ChessManager.DrawButton.getText().equals(getResources().getString(R.string.DrawQ)))
+                {
+                    ChessManager.DrawGame = true;
+                    System.out.println("DRAW GAME!!!!!!!!!!!!!!");
+                    Toast.makeText(MainActivity.this
+                            , R.string.DrawGame,
+                            Toast.LENGTH_LONG).show();
+                }
+                ChessManager.switchCurrentColor();;
+                ChessManager.DrawButton.setText(R.string.DrawQ);
+            }
+        });
 
         System.out.println("caching pieces!");
         ChessManager.cacheLegalMoves(Color.White);

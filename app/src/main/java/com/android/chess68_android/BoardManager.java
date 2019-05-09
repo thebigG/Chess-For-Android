@@ -63,6 +63,7 @@ public Button RandomButton;
 public Button ResignButton;
 public Button DrawButton;
 public boolean undoAble = false;
+public boolean DrawGame = false;
  /*
 These containers allow us to optimize iteration over all of the pieces, without 
 having to iterate over the entire board, which contains 64 empty sqaures--
@@ -94,7 +95,7 @@ public  ArrayList<Piece> BlackContainer;
      UndoButton = this.ChessActivity.findViewById(R.id.undo_button);
      InCheckView = this.ChessActivity.findViewById(R.id.InCheckView);
      DrawButton = this.ChessActivity.findViewById(R.id.Draw_Button);
-     ResignButton = this.ChessActivity.findViewById(R.id.Resign_Button)
+     ResignButton = this.ChessActivity.findViewById(R.id.Resign_Button);
      RandomButton = this.ChessActivity.findViewById(R.id.Random_Button);
      CurrentPlayerPrompt = (TextView)ChessActivity.findViewById(R.id.CurrentPlayer);
      ChessBoard = (TableLayout) ChessActivity.findViewById(R.id.Board);

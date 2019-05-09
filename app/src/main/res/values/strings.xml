@@ -7,4 +7,6 @@
     <string name="Nobody">Nobody</string>
     <string name="BlackWins">Black Wins!</string>
     <string name="WhiteWins">White Wins!</string>
+    <string name="DrawQ">Draw?</string>
+    <string name= "DrawGame">The game has ended on a draw. </string>
 </resources>
