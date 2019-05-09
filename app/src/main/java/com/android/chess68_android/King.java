@@ -53,7 +53,7 @@ public class King extends Piece {
 
 
         }
-        if(PieceColor == Color.White) {
+        if(PieceColor == Color.White && (CurrentPosition.getY() == 4)) {
             if (CurrentPosition.getY() - 2 == Destination.getY() && CurrentPosition.getX() == Destination.getX() && CurrentPosition.getX() == 7) {
 //            System.out.println("Trying castling");
                 if (!inCheck) {
@@ -61,7 +61,7 @@ public class King extends Piece {
                     if (FirstMove) {
 //                    System.out.println("First move is true");
                         Point RookPosition = new Point(Destination.getX(), CurrentPosition.getY() - 4);
-//                    System.out.println("Rook's position:" + RookPosition);
+System.out.println("Rook's position:" + RookPosition);
 //                    System.out.println("Rook in question:" + Board[RookPosition.getX()][RookPosition.getY()]);
                         if (Board[Destination.getX()][CurrentPosition.getY() - 4] != null) {
 //                       System.out.println("There is a piece on the target spot");
@@ -105,7 +105,7 @@ public class King extends Piece {
                     if (FirstMove) {
 //                    System.out.println("First move is true");
                         Point RookPosition = new Point(Destination.getX(), CurrentPosition.getY() + 3);
-//                    System.out.println("Rook's position:" + RookPosition);
+System.out.println("Rook's position:" + RookPosition);
 //                    System.out.println("Rook in question:" + Board[RookPosition.getX()][RookPosition.getY()]);
                         if (Board[Destination.getX()][CurrentPosition.getY() + 3] != null) {
 //                       System.out.println("There is a piece on the target spot");
@@ -142,7 +142,7 @@ public class King extends Piece {
 
             }
         }
-        else if(PieceColor == Color.Black)
+        else if(PieceColor == Color.Black && (CurrentPosition.getY() == 4))
         {
             if (CurrentPosition.getY() - 2 == Destination.getY() && CurrentPosition.getX() == Destination.getX() && CurrentPosition.getX() == 0) {
 //            System.out.println("Trying castling");
@@ -151,7 +151,7 @@ public class King extends Piece {
                     if (FirstMove) {
 //                    System.out.println("First move is true");
                         Point RookPosition = new Point(Destination.getX(), CurrentPosition.getY() - 4);
-//                    System.out.println("Rook's position:" + RookPosition);
+System.out.println("Rook's position:" + RookPosition);
 //                    System.out.println("Rook in question:" + Board[RookPosition.getX()][RookPosition.getY()]);
                         if (Board[Destination.getX()][CurrentPosition.getY() - 4] != null) {
 //                       System.out.println("There is a piece on the target spot");
@@ -195,7 +195,7 @@ public class King extends Piece {
                     if (FirstMove) {
 //                    System.out.println("First move is true");
                         Point RookPosition = new Point(Destination.getX(), CurrentPosition.getY() + 3);
-//                    System.out.println("Rook's position:" + RookPosition);
+System.out.println("Rook's position:" + RookPosition);
 //                    System.out.println("Rook in question:" + Board[RookPosition.getX()][RookPosition.getY()]);
                         if (Board[Destination.getX()][CurrentPosition.getY() + 3] != null) {
 //                       System.out.println("There is a piece on the target spot");
@@ -276,7 +276,7 @@ public class King extends Piece {
 
         }
 //        /**Castling Code
-        else if (PieceColor == Color.White)
+        else if (PieceColor == Color.White && (CurrentPosition.getY() == 4))
         {
             System.out.println("Tyring castling on white king");
             if (CurrentPosition.getY() - 2 == Destination.getY() && CurrentPosition.getX() == Destination.getX() && CurrentPosition.getX() == 7) {
@@ -287,7 +287,7 @@ public class King extends Piece {
                     if (FirstMove) {
                         //                    System.out.println("First move is true");
 
-                        //                    System.out.println("Rook's position:" + RookPosition);
+                        System.out.println("Rook's position:" + new Point(Destination.getX(),CurrentPosition.getY() - 4 ));
                         //                    System.out.println("Rook in question:" + Board[RookPosition.getX()][RookPosition.getY()]);
                         if (Board[Destination.getX()][CurrentPosition.getY() - 4] != null) {
                             //                       System.out.println("There is a piece on the target spot");
@@ -339,7 +339,7 @@ public class King extends Piece {
                         //                System.out.println("Not in check");
                         if (FirstMove) {
                             //                    System.out.println("First move is true");
-                            //                    System.out.println("Rook's position:" + RookPosition);
+//                            System.out.println("Rook's position:" + RookPosition);
                             //                    System.out.println("Rook in question:" + Board[RookPosition.getX()][RookPosition.getY()]);
                             if (Board[Destination.getX()][CurrentPosition.getY() + 3] != null) {
                                 //                       System.out.println("There is a piece on the target spot");
@@ -385,7 +385,7 @@ public class King extends Piece {
                 }
 
         }
-        else if(PieceColor == Color.Black)
+        else if(PieceColor == Color.Black  && (CurrentPosition.getY() == 4))
         {
             if (CurrentPosition.getY() - 2 == Destination.getY() && CurrentPosition.getX() == Destination.getX() && CurrentPosition.getX() == 0)
             {
@@ -396,8 +396,8 @@ public class King extends Piece {
                     if (FirstMove) {
                         //                    System.out.println("First move is true");
 
-                        //                    System.out.println("Rook's position:" + RookPosition);
-                        //                    System.out.println("Rook in question:" + Board[RookPosition.getX()][RookPosition.getY()]);
+//                        System.out.println("Rook's position:" + RookPosition);
+                                            System.out.println("Rook Position in question:" + new Point(Destination.getX(), CurrentPosition.getY() - 4));
                         if (Board[Destination.getX()][CurrentPosition.getY() - 4] != null) {
                             //                       System.out.println("There is a piece on the target spot");
                             if (Board[Destination.getX()][CurrentPosition.getY() - 4].PieceColor == this.PieceColor && Board[Destination.getX()][CurrentPosition.getY() - 4].getName().equals("R") && Board[Destination.getX()][CurrentPosition.getY() - 4].FirstMove) {
@@ -446,8 +446,8 @@ public class King extends Piece {
                         if (FirstMove) {
                             //                    System.out.println("First move is true");
                             Point RookPosition = new Point(Destination.getX(), CurrentPosition.getY() + 3);
-                            //                    System.out.println("Rook's position:" + RookPosition);
-                            //                    System.out.println("Rook in question:" + Board[RookPosition.getX()][RookPosition.getY()]);
+                                                System.out.println("Rook's position:" + RookPosition);
+                                                System.out.println("Rook in question:" + Board[RookPosition.getX()][RookPosition.getY()]);
                             if (Board[Destination.getX()][CurrentPosition.getY() + 3] != null) {
                                 //                       System.out.println("There is a piece on the target spot");
                                 if (Board[Destination.getX()][CurrentPosition.getY() + 3].PieceColor == this.PieceColor && Board[Destination.getX()][CurrentPosition.getY() + 3].getName().equals("R") && Board[Destination.getX()][CurrentPosition.getY() + 3].FirstMove) {

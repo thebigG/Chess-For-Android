@@ -98,7 +98,7 @@ public class Rook extends Piece
        }
        else if(CurrentPosition.getY()>Destination.getY())
        {
-           for(int col = CurrentPosition.getY() - 1;col>=CurrentPosition.getY() ;col--)
+           for(int col = CurrentPosition.getY() - 1;col>=Destination.getY() ;col--)
            {
                if(col<0)
                {
