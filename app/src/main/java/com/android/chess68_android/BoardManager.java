@@ -757,11 +757,35 @@ public boolean checkMate()
 {
     if(CurrentColor == Color.Black)
     {
-        return CurrentLegalMovesForBlack.isEmpty();
+        System.out.println("checkMate test for Black: " + CurrentLegalMovesForBlack.values().isEmpty());
+        System.out.println("Value left in the cache for black :" +  CurrentLegalMovesForBlack.values());
+        System.out.println("Keyste size for black:" + CurrentLegalMovesForBlack.keySet().size());
+        for(Piece p: BlackContainer)
+        {
+            Point[] temp =  CurrentLegalMovesForBlack.get(p.CurrentPosition);
+            {
+                System.out.println(String.format("Current legal moves for %s:%s", p.toString(), Arrays.toString(temp)));
+                if(temp.length>0)
+                    return false;
+            }
+        }
+        return  true;
     }
     else
     {
-     return CurrentLegalMovesForWhite.isEmpty();
+
+        System.out.println("checkMate test for White: " + CurrentLegalMovesForWhite.values().isEmpty());
+        System.out.println("Keyste size for white:" + CurrentLegalMovesForWhite.keySet().size());
+        for(Piece p: WhiteContainer)
+        {
+            Point[] temp =  CurrentLegalMovesForWhite.get(p.CurrentPosition);
+            {
+                if(temp.length>0)
+                    return false;
+                System.out.println(String.format("Current legal moves for %s:%s", p.toString(), Arrays.toString(temp)));
+            }
+        }
+        return true;
     }
 
 }

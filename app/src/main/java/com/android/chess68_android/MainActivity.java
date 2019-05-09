@@ -121,14 +121,22 @@ public class MainActivity extends AppCompatActivity {
                                             Toast.makeText(MainActivity.this
                                                     , R.string.WhiteWins,
                                                     Toast.LENGTH_LONG).show();
+                                            System.out.println("********************White WINS!!!!!!!!!!!!");
                                         }
                                         else
                                             {
                                                 Toast.makeText(MainActivity.this
                                                         , R.string.BlackWins,
                                                         Toast.LENGTH_LONG).show();
+                                                System.out.println("********************Black WINS!!!!!!!!!!!!");
+
                                             }
                                     }
+                                    else
+                                        {
+                                            System.out.println("********************NOBODY WINS!!!!!!!!!!!!");
+
+                                        }
                                 }
                             });
                         }
